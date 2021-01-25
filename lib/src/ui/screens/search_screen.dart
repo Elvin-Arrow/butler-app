@@ -1,5 +1,6 @@
 import 'package:butler_app/src/bloc/library_bloc.dart';
 import 'package:butler_app/src/bloc/menu_bloc.dart';
+import 'package:butler_app/src/resources/library_repository.dart';
 import 'package:butler_app/src/resources/services/movie_service.dart';
 import 'package:butler_app/src/resources/utilities/constants.dart';
 import 'package:butler_app/src/ui/widgets/search_bar.dart';
@@ -22,57 +23,73 @@ class SearchScreen extends StatelessWidget {
           height: size.height,
           width: size.width,
           color: kBackgroundColor,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              _getNavLinks(),
-              SizedBox(
-                height: size.height / 24 - 10,
-              ),
-              Material(
-                child: Search(
-                  onChanged: (val) {
-                    BlocProvider.of<LibraryBloc>(context)
-                        .add(SearchEntryEvent(val));
-                  },
-                ),
-              ),
-              TextButton(
-                onPressed: () {
-                  BlocProvider.of<LibraryBloc>(context).add(SearchEvent());
-                },
-                child: Text('Search'),
-              ),
-              Expanded(
-                child:
-                    BlocBuilder<LibraryBloc, LibraryState>(builder: (_, state) {
-                  List<Results> result = [];
-                  if (state is SearchingLibrary) {
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  } else if (state is ResultState) {
-                    result = state.movieSearchResult.results;
-                    return ListView.builder(
-                      itemBuilder: (_, index) {
-                        return Text(
-                          result[index].title,
-                          style: TextStyle(color: Colors.white),
-                        );
-                      },
-                      itemCount: result.length,
-                    );
-                  }
-                  return Container();
-                }),
-              ),
-            ],
-          ),
+          child: _setupScreenWidgets(context, size),
         ),
       ),
     );
   }
 
+  /// Method to display content as per the currently emitted stated.
+  /// The method also helps delivery the state to the search callback
+  /// to search for a specific type of content like say, movies.
+  ///
+  Widget _setupScreenWidgets(BuildContext context, Size size) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        _getNavLinks(),
+        SizedBox(
+          height: size.height / 24 - 10,
+        ),
+        Material(
+          child: Search(
+            onChanged: (val) {
+              BlocProvider.of<LibraryBloc>(context).add(SearchEntryEvent(val));
+            },
+          ),
+        ),
+        BlocBuilder<MenuBloc, MenuState>(
+          builder: (_, state) {
+            return TextButton(
+              onPressed: () {
+                context
+                    .read<LibraryBloc>()
+                    .add(SearchEvent(_getSearchType(state)));
+              },
+              child: Text('Search'),
+            );
+          },
+        ),
+        Expanded(
+          child: BlocBuilder<LibraryBloc, LibraryState>(builder: (_, state) {
+            List<Results> result = [];
+            if (state is SearchingLibrary) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (state is ResultState) {
+              result = state.movieSearchResult.results;
+              return ListView.builder(
+                itemBuilder: (_, index) {
+                  return Text(
+                    result[index].title,
+                    style: TextStyle(color: Colors.white),
+                  );
+                },
+                itemCount: result.length,
+              );
+            }
+            return Container();
+          }),
+        ),
+      ],
+    );
+  }
+
+  /// Method to get the navigation widgets that allow toggeling between
+  /// the various content types and allow for search of selected content
+  /// type.
+  ///
   Widget _getNavLinks() {
     return BlocBuilder<MenuBloc, MenuState>(builder: (_, state) {
       return Row(
@@ -139,5 +156,27 @@ class SearchScreen extends StatelessWidget {
         ],
       );
     });
+  }
+
+  /// Method to get the search type based on the current content state.
+  ///
+  SearchType _getSearchType(MenuState state) {
+    SearchType searchType;
+
+    if (state is MovieState) {
+      searchType = SearchType.Movie;
+    } else if (state is PodcastState) {
+      searchType = SearchType.Podcast;
+    } else if (state is MusicState) {
+      searchType = SearchType.Music;
+    } else if (state is GameState) {
+      searchType = SearchType.Game;
+    } else if (state is BookState) {
+      searchType = SearchType.Book;
+    } else {
+      searchType = SearchType.TVShow;
+    }
+
+    return searchType;
   }
 }
