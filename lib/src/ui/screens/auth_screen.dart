@@ -44,7 +44,7 @@ class AuthScreen extends StatelessWidget {
         } else if (state is RegisterState) {
           contentWidget = _getContentWidget(context, AuthType.Register);
         } else if (state is AuthLoading) {
-          contentWidget = _getLoadingWidget();
+          contentWidget = getLoadingWidget();
         }
         return LayoutBuilder(builder: (_, BoxConstraints constraints) {
           return SingleChildScrollView(
@@ -58,14 +58,6 @@ class AuthScreen extends StatelessWidget {
           );
         });
       },
-    );
-  }
-
-  /// Method responsible for returning the circular progress indicator.
-  ///
-  Widget _getLoadingWidget() {
-    return Center(
-      child: CircularProgressIndicator(),
     );
   }
 
@@ -200,4 +192,12 @@ class AuthScreen extends StatelessWidget {
     else
       return 'Register';
   }
+}
+
+/// Method responsible for returning the circular progress indicator.
+///
+Widget getLoadingWidget() {
+  return Center(
+    child: CircularProgressIndicator(),
+  );
 }

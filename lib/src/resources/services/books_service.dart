@@ -23,9 +23,9 @@ class BookSearchResult {
     kind = json['kind'];
     totalItems = json['totalItems'];
     if (json['items'] != null) {
-      items = new List<BookItem>();
+      items = <BookItem>[];
       json['items'].forEach((v) {
-        items.add(new BookItem.fromJson(v));
+        items.add(BookItem.fromJson(v));
       });
     }
   }
