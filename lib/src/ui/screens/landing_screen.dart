@@ -2,7 +2,6 @@ import 'package:butler_app/src/bloc/auth_bloc.dart';
 import 'package:butler_app/src/resources/utilities/constants.dart';
 import 'package:butler_app/src/ui/screens/auth_screen.dart';
 import 'package:butler_app/src/ui/screens/dashboard_screen.dart';
-import 'package:butler_app/src/ui/screens/library_screen.dart';
 import 'package:butler_app/src/ui/widgets/rounded_rectanlge_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
