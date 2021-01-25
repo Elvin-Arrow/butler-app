@@ -1,5 +1,7 @@
 import 'package:butler_app/src/bloc/auth_bloc.dart';
+import 'package:butler_app/src/resources/auth_repository.dart';
 import 'package:butler_app/src/resources/utilities/constants.dart';
+import 'package:butler_app/src/ui/screens/dashboard_screen.dart';
 import 'package:butler_app/src/ui/widgets/modified_text_field.dart';
 import 'package:butler_app/src/ui/widgets/rounded_rectanlge_button.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +28,14 @@ class AuthScreen extends StatelessWidget {
   ///
   Widget _setupPageContent(BuildContext context) {
     return BlocConsumer<AuthBloc, AuthState>(
+      listener: (_, state) {
+        if (state is AuthSuccess) {
+          while (Navigator.canPop(context)) {
+            Navigator.pop(context);
+          }
+          Navigator.pushReplacementNamed(context, DashboardScreen.id);
+        }
+      },
       builder: (_, state) {
         Widget contentWidget;
 
@@ -47,14 +57,6 @@ class AuthScreen extends StatelessWidget {
             ),
           );
         });
-      },
-      listener: (context, state) {
-        if (state is AuthSuccess) {
-          while (Navigator.canPop(context)) {
-            Navigator.pop(context);
-          }
-          Navigator.pushReplacementNamed(context, MenuScreen.id);
-        }
       },
     );
   }
@@ -111,9 +113,10 @@ class AuthScreen extends StatelessWidget {
     );
 
     List<Widget> authControlWidgets = [
+      // Auth button, login or register
       RoundedRectangleButton(
         onPressed: () {
-          BlocProvider.of<AuthBloc>(context).add(AttemptAuthEvent(authType));
+          context.read<AuthBloc>().add(AuthenticateEvent(authType));
         },
         buttonText: _getAuthenticationButtonText(authType),
         buttonColour: kDefaultIconColour,
@@ -141,11 +144,10 @@ class AuthScreen extends StatelessWidget {
         keyboardType: TextInputType.emailAddress,
         borderRadius: 44.0,
         prefixIcon: Icon(Icons.mail),
-        onChanged: (val) {
-          BlocProvider.of<AuthBloc>(context).add(InfoEntryEvent(
-            val,
-            CredentialType.Email,
-          ));
+        onChanged: (credential) {
+          context
+              .read<AuthBloc>()
+              .add(CredentialEntryEvent(credential, CredentialType.Email));
         },
       ),
       SizedBox(
@@ -156,11 +158,10 @@ class AuthScreen extends StatelessWidget {
         obscureText: true,
         prefixIcon: Icon(Icons.vpn_key),
         borderRadius: 44.0,
-        onChanged: (val) {
-          BlocProvider.of<AuthBloc>(context).add(InfoEntryEvent(
-            val,
-            CredentialType.Password,
-          ));
+        onChanged: (credential) {
+          context
+              .read<AuthBloc>()
+              .add(CredentialEntryEvent(credential, CredentialType.Password));
         },
       ),
     ];

@@ -18,17 +18,29 @@ class AuthRepository {
     _auth = Auth();
   }
 
-  void login(AuthCredentials loginModel) async {
-    await _auth.loginUserWithEmailAndPassword(
-      email: loginModel.email,
-      password: loginModel.password,
-    );
+  Future<bool> login(AuthCredentials authCredentials) async {
+    try {
+      await _auth.loginUserWithEmailAndPassword(
+        email: authCredentials.email,
+        password: authCredentials.password,
+      );
+
+      final currentUser = await _auth.getCurrentUser();
+
+      return currentUser != null ? true : false;
+    } catch (_) {
+      return false;
+    }
   }
 
-  void register(AuthCredentials loginModel) async {
+  Future<bool> register(AuthCredentials authCredentials) async {
     await _auth.registerUser(
-      email: loginModel.email,
-      password: loginModel.password,
+      email: authCredentials.email,
+      password: authCredentials.password,
     );
+
+    final currentUser = await _auth.getCurrentUser();
+
+    return currentUser != null ? true : false;
   }
 }
