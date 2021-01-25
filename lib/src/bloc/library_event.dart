@@ -9,4 +9,8 @@ class SearchEntryEvent extends LibraryEvent {
   SearchEntryEvent(this.searchQuery);
 }
 
-class SearchEvent extends LibraryEvent {}
+class SearchEvent extends LibraryEvent {
+  final SearchType searchType;
+
+  SearchEvent(this.searchType);
+}
