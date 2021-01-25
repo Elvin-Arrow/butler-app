@@ -1,5 +1,14 @@
 import 'package:butler_app/src/resources/services/movie_service.dart';
 
+enum SearchType {
+  Movie,
+  Book,
+  Music,
+  Game,
+  TVShow,
+  Podcast,
+}
+
 class LibraryRepository {
   MovieService _movieService;
 
