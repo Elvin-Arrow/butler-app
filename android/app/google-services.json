@@ -1,0 +1,39 @@
+{
+    "project_info": {
+      "project_number": "343763898554",
+      "project_id": "butler-a37b4",
+      "storage_bucket": "butler-a37b4.appspot.com"
+    },
+    "client": [
+      {
+        "client_info": {
+          "mobilesdk_app_id": "1:343763898554:android:bd97fec8493f69b31eb283",
+          "android_client_info": {
+            "package_name": "com.example.butler_app"
+          }
+        },
+        "oauth_client": [
+          {
+            "client_id": "343763898554-taittbd5h0v16hi5h4g1cheajv0b421a.apps.googleusercontent.com",
+            "client_type": 3
+          }
+        ],
+        "api_key": [
+          {
+            "current_key": "AIzaSyBmieG7GnlpmbJ_RZ6yLlx9gm6g7t-vNaQ"
+          }
+        ],
+        "services": {
+          "appinvite_service": {
+            "other_platform_oauth_client": [
+              {
+                "client_id": "343763898554-taittbd5h0v16hi5h4g1cheajv0b421a.apps.googleusercontent.com",
+                "client_type": 3
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "configuration_version": "1"
+  }

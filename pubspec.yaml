@@ -25,6 +25,16 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.1
   flutter_bloc: ^6.1.1
+  circular_menu: ^1.1.2
+  circular_profile_avatar: ^1.0.8
+  cloud_firestore: ^0.16.0
+  connectivity: ^2.0.2
+  firebase_auth: ^0.20.0+1
+  firebase_core: ^0.7.0
+  flutter_bloc: ^6.1.1
+  font_awesome_flutter: ^8.11.0
+  http: ^0.12.2
+  auto_size_text: ^2.1.0
 
 dev_dependencies:
   flutter_test:
