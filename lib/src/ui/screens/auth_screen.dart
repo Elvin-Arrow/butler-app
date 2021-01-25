@@ -1,7 +1,5 @@
 import 'package:butler_app/src/bloc/auth_bloc.dart';
-import 'package:butler_app/src/resources/auth_repository.dart';
 import 'package:butler_app/src/resources/utilities/constants.dart';
-import 'package:butler_app/src/ui/screens/menu_screen.dart';
 import 'package:butler_app/src/ui/widgets/modified_text_field.dart';
 import 'package:butler_app/src/ui/widgets/rounded_rectanlge_button.dart';
 import 'package:flutter/material.dart';
@@ -84,8 +82,10 @@ class AuthScreen extends StatelessWidget {
               backgroundColor: kSelectedIconColour,
               child: Text(
                 'B',
-                style:
-                TextStyle(fontWeight: FontWeight.bold, fontSize: 66.0, color: kBackgroundColor),
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 66.0,
+                    color: kBackgroundColor),
               ),
               radius: 46.0,
             ),
@@ -95,7 +95,8 @@ class AuthScreen extends StatelessWidget {
           ),
           Text(
             'Butler',
-            style: kTitleTextStyle.copyWith(color: kDefaultIconColour, fontSize: 36),
+            style: kTitleTextStyle.copyWith(
+                color: kDefaultIconColour, fontSize: 36),
             textAlign: TextAlign.center,
           ),
         ],
