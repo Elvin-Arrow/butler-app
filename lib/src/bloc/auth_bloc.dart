@@ -23,7 +23,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Stream<AuthState> mapEventToState(
     AuthEvent event,
   ) async* {
-    if (event is ShowLoginScreen) {
+    if (event is CheckAuthStatus) {
+      final flag = await _authRepository.checkAuthStatus();
+      if (flag)
+        yield AlreadyAuthenticated();
+      else
+        yield LaunchAuth();
+    } else if (event is ShowLoginScreen) {
       yield LoginState();
     } else if (event is ShowRegisterScreen) {
       yield RegisterState();
