@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:butler_app/src/resources/services/movie_service.dart';
 import 'package:meta/meta.dart';
 part 'menu_event.dart';
 part 'menu_state.dart';
