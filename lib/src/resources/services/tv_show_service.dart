@@ -1,28 +1,27 @@
-
-
 import 'package:butler_app/src/resources/utilities/APIKey.dart';
 
 import 'http_request.dart';
 import 'movie_service.dart';
 
-class TVShowService{
-
+class TVShowService {
   Future<TVShowSearchResult> getMovieSearchResult(String query) async {
-    String searchUrl = 'https://api.themoviedb.org/3/search/tv?api_key=${APIkey.tv_show_api_key}&language=en-US&page=1&include_adult=true&query=$query';
+    String searchUrl =
+        'https://api.themoviedb.org/3/search/tv?api_key=${APIkey.tv_show_api_key}&language=en-US&page=1&include_adult=true&query=$query';
 
     final tvSearchResponse = await getData(searchUrl);
-    TVShowSearchResult tvShowSearchResult = TVShowSearchResult.fromJson(tvSearchResponse);
+    TVShowSearchResult tvShowSearchResult =
+        TVShowSearchResult.fromJson(tvSearchResponse);
     return tvSearchResponse;
   }
 
   Future<TVShowDetail> getTVShowDetail(int id) async {
-    String detUrl = "https://api.themoviedb.org/3/tv/$id?api_key=${APIkey.tv_show_api_key}&language=en-US";
+    String detUrl =
+        "https://api.themoviedb.org/3/tv/$id?api_key=${APIkey.tv_show_api_key}&language=en-US";
 
     final tvDetailResponse = await getData(detUrl);
     TVShowDetail tvShowDetail = TVShowDetail.fromJson(tvDetailResponse);
     return tvShowDetail;
   }
-
 }
 
 class TVShowSearchResult {
@@ -37,7 +36,7 @@ class TVShowSearchResult {
   TVShowSearchResult.fromJson(Map<String, dynamic> json) {
     page = json['page'];
     if (json['results'] != null) {
-      results = new List<TVResults>();
+      results = <TVResults>[];
       json['results'].forEach((v) {
         results.add(new TVResults.fromJson(v));
       });
@@ -75,18 +74,18 @@ class TVResults {
 
   TVResults(
       {this.backdropPath,
-        this.firstAirDate,
-        this.genreIds,
-        this.id,
-        this.name,
-        this.originCountry,
-        this.originalLanguage,
-        this.originalName,
-        this.overview,
-        this.popularity,
-        this.posterPath,
-        this.voteAverage,
-        this.voteCount});
+      this.firstAirDate,
+      this.genreIds,
+      this.id,
+      this.name,
+      this.originCountry,
+      this.originalLanguage,
+      this.originalName,
+      this.overview,
+      this.popularity,
+      this.posterPath,
+      this.voteAverage,
+      this.voteCount});
 
   TVResults.fromJson(Map<String, dynamic> json) {
     backdropPath = json['backdrop_path'];
@@ -152,39 +151,38 @@ class TVShowDetail {
   int voteCount;
 
   TVShowDetail(
-      {
-        this.episodeRunTime,
-        this.firstAirDate,
-        this.genres,
-        this.homepage,
-        this.id,
-        this.inProduction,
-        this.languages,
-        this.lastAirDate,
-        this.lastEpisodeToAir,
-        this.name,
-        this.networks,
-        this.numberOfEpisodes,
-        this.numberOfSeasons,
-        this.originCountry,
-        this.originalLanguage,
-        this.originalName,
-        this.overview,
-        this.popularity,
-        this.posterPath,
-        this.seasons,
-        this.spokenLanguages,
-        this.status,
-        this.tagline,
-        this.type,
-        this.voteAverage,
-        this.voteCount});
+      {this.episodeRunTime,
+      this.firstAirDate,
+      this.genres,
+      this.homepage,
+      this.id,
+      this.inProduction,
+      this.languages,
+      this.lastAirDate,
+      this.lastEpisodeToAir,
+      this.name,
+      this.networks,
+      this.numberOfEpisodes,
+      this.numberOfSeasons,
+      this.originCountry,
+      this.originalLanguage,
+      this.originalName,
+      this.overview,
+      this.popularity,
+      this.posterPath,
+      this.seasons,
+      this.spokenLanguages,
+      this.status,
+      this.tagline,
+      this.type,
+      this.voteAverage,
+      this.voteCount});
 
   TVShowDetail.fromJson(Map<String, dynamic> json) {
     episodeRunTime = json['episode_run_time'].cast<int>();
     firstAirDate = json['first_air_date'];
     if (json['genres'] != null) {
-      genres = new List<Genres>();
+      genres = <Genres>[];
       json['genres'].forEach((v) {
         genres.add(new Genres.fromJson(v));
       });
@@ -199,7 +197,7 @@ class TVShowDetail {
         : null;
     name = json['name'];
     if (json['networks'] != null) {
-      networks = new List<Networks>();
+      networks = <Networks>[];
       json['networks'].forEach((v) {
         networks.add(new Networks.fromJson(v));
       });
@@ -213,13 +211,13 @@ class TVShowDetail {
     popularity = json['popularity'];
     posterPath = json['poster_path'];
     if (json['seasons'] != null) {
-      seasons = new List<Seasons>();
+      seasons = <Seasons>[];
       json['seasons'].forEach((v) {
         seasons.add(new Seasons.fromJson(v));
       });
     }
     if (json['spoken_languages'] != null) {
-      spokenLanguages = new List<SpokenLanguages>();
+      spokenLanguages = <SpokenLanguages>[];
       json['spoken_languages'].forEach((v) {
         spokenLanguages.add(new SpokenLanguages.fromJson(v));
       });
@@ -288,15 +286,15 @@ class LastEpisodeToAir {
 
   LastEpisodeToAir(
       {this.airDate,
-        this.episodeNumber,
-        this.id,
-        this.name,
-        this.overview,
-        this.productionCode,
-        this.seasonNumber,
-        this.stillPath,
-        this.voteAverage,
-        this.voteCount});
+      this.episodeNumber,
+      this.id,
+      this.name,
+      this.overview,
+      this.productionCode,
+      this.seasonNumber,
+      this.stillPath,
+      this.voteAverage,
+      this.voteCount});
 
   LastEpisodeToAir.fromJson(Map<String, dynamic> json) {
     airDate = json['air_date'];
@@ -363,12 +361,12 @@ class Seasons {
 
   Seasons(
       {this.airDate,
-        this.episodeCount,
-        this.id,
-        this.name,
-        this.overview,
-        this.posterPath,
-        this.seasonNumber});
+      this.episodeCount,
+      this.id,
+      this.name,
+      this.overview,
+      this.posterPath,
+      this.seasonNumber});
 
   Seasons.fromJson(Map<String, dynamic> json) {
     airDate = json['air_date'];
@@ -392,4 +390,3 @@ class Seasons {
     return data;
   }
 }
-

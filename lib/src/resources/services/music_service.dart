@@ -1,13 +1,14 @@
 import 'http_request.dart';
 
-class MusicService{
+class MusicService {
   Future<MusicSearchResult> getMusicSearch(String query) async {
-    final url = "https://api.podcastindex.org/api/1.0/search/byterm?q=$query&pretty";
+    final url =
+        "https://api.podcastindex.org/api/1.0/search/byterm?q=$query&pretty";
 
     final musicSearchResponse = await getData(url);
 
-    MusicSearchResult musicSearchResult = MusicSearchResult.fromJson(
-        musicSearchResponse);
+    MusicSearchResult musicSearchResult =
+        MusicSearchResult.fromJson(musicSearchResponse);
     return musicSearchResult;
   }
 }
@@ -21,7 +22,7 @@ class MusicSearchResult {
 
   MusicSearchResult.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
-      data = new List<Data>();
+      data = <Data>[];
       json['data'].forEach((v) {
         data.add(new Data.fromJson(v));
       });
@@ -61,21 +62,21 @@ class Data {
 
   Data(
       {this.id,
-        this.readable,
-        this.title,
-        this.titleShort,
-        this.titleVersion,
-        this.link,
-        this.duration,
-        this.rank,
-        this.explicitLyrics,
-        this.explicitContentLyrics,
-        this.explicitContentCover,
-        this.preview,
-        this.md5Image,
-        this.artist,
-        this.album,
-        this.type});
+      this.readable,
+      this.title,
+      this.titleShort,
+      this.titleVersion,
+      this.link,
+      this.duration,
+      this.rank,
+      this.explicitLyrics,
+      this.explicitContentLyrics,
+      this.explicitContentCover,
+      this.preview,
+      this.md5Image,
+      this.artist,
+      this.album,
+      this.type});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -92,7 +93,7 @@ class Data {
     preview = json['preview'];
     md5Image = json['md5_image'];
     artist =
-    json['artist'] != null ? new Artist.fromJson(json['artist']) : null;
+        json['artist'] != null ? new Artist.fromJson(json['artist']) : null;
     album = json['album'] != null ? new Album.fromJson(json['album']) : null;
     type = json['type'];
   }
@@ -137,15 +138,15 @@ class Artist {
 
   Artist(
       {this.id,
-        this.name,
-        this.link,
-        this.picture,
-        this.pictureSmall,
-        this.pictureMedium,
-        this.pictureBig,
-        this.pictureXl,
-        this.tracklist,
-        this.type});
+      this.name,
+      this.link,
+      this.picture,
+      this.pictureSmall,
+      this.pictureMedium,
+      this.pictureBig,
+      this.pictureXl,
+      this.tracklist,
+      this.type});
 
   Artist.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -190,15 +191,15 @@ class Album {
 
   Album(
       {this.id,
-        this.title,
-        this.cover,
-        this.coverSmall,
-        this.coverMedium,
-        this.coverBig,
-        this.coverXl,
-        this.md5Image,
-        this.tracklist,
-        this.type});
+      this.title,
+      this.cover,
+      this.coverSmall,
+      this.coverMedium,
+      this.coverBig,
+      this.coverXl,
+      this.md5Image,
+      this.tracklist,
+      this.type});
 
   Album.fromJson(Map<String, dynamic> json) {
     id = json['id'];

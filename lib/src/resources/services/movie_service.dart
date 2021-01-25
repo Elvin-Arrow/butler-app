@@ -35,7 +35,7 @@ class MovieSearchResult {
   MovieSearchResult.fromJson(Map<String, dynamic> json) {
     page = json['page'];
     if (json['results'] != null) {
-      results = List<Results>();
+      results = <Results>[];
       json['results'].forEach((v) {
         results.add(new Results.fromJson(v));
       });
@@ -164,7 +164,7 @@ class MovieDetail {
   MovieDetail.fromJson(Map<String, dynamic> json) {
     adult = json['adult'];
     if (json['genres'] != null) {
-      genres = new List<Genres>();
+      genres = <Genres>[];
       json['genres'].forEach((v) {
         genres.add(new Genres.fromJson(v));
       });
@@ -178,7 +178,7 @@ class MovieDetail {
     releaseDate = json['release_date'];
     runtime = json['runtime'];
     if (json['spoken_languages'] != null) {
-      spokenLanguages = new List<SpokenLanguages>();
+      spokenLanguages = <SpokenLanguages>[];
       json['spoken_languages'].forEach((v) {
         spokenLanguages.add(new SpokenLanguages.fromJson(v));
       });

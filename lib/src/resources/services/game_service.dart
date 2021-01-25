@@ -1,14 +1,13 @@
 import 'http_request.dart';
 
-class GameService{
-
+class GameService {
   Future<GameSearchResult> getGamesSearch(String query) async {
     final url = "https://api.rawg.io/api/games?search=$query";
 
     final gameSearchResponse = await getData(url);
 
-    GameSearchResult gameSearchResult = GameSearchResult.fromJson(
-        gameSearchResponse);
+    GameSearchResult gameSearchResult =
+        GameSearchResult.fromJson(gameSearchResponse);
     return gameSearchResult;
   }
 }
@@ -28,7 +27,7 @@ class GameSearchResult {
     next = json['next'];
     previous = json['previous'];
     if (json['results'] != null) {
-      results = new List<GameResults>();
+      results = <GameResults>[];
       json['results'].forEach((v) {
         results.add(new GameResults.fromJson(v));
       });
@@ -82,47 +81,47 @@ class GameResults {
 
   GameResults(
       {this.slug,
-        this.name,
-        this.playtime,
-        this.platforms,
-        this.stores,
-        this.released,
-        this.tba,
-        this.backgroundImage,
-        this.rating,
-        this.ratingTop,
-        this.ratings,
-        this.ratingsCount,
-        this.reviewsTextCount,
-        this.added,
-        this.addedByStatus,
-        this.metacritic,
-        this.suggestionsCount,
-        this.updated,
-        this.id,
-        this.score,
-        this.clip,
-        this.tags,
-        this.esrbRating,
-        this.userGame,
-        this.reviewsCount,
-        this.communityRating,
-        this.saturatedColor,
-        this.dominantColor,
-        this.shortScreenshots});
+      this.name,
+      this.playtime,
+      this.platforms,
+      this.stores,
+      this.released,
+      this.tba,
+      this.backgroundImage,
+      this.rating,
+      this.ratingTop,
+      this.ratings,
+      this.ratingsCount,
+      this.reviewsTextCount,
+      this.added,
+      this.addedByStatus,
+      this.metacritic,
+      this.suggestionsCount,
+      this.updated,
+      this.id,
+      this.score,
+      this.clip,
+      this.tags,
+      this.esrbRating,
+      this.userGame,
+      this.reviewsCount,
+      this.communityRating,
+      this.saturatedColor,
+      this.dominantColor,
+      this.shortScreenshots});
 
   GameResults.fromJson(Map<String, dynamic> json) {
     slug = json['slug'];
     name = json['name'];
     playtime = json['playtime'];
     if (json['platforms'] != null) {
-      platforms = new List<Platforms>();
+      platforms = <Platforms>[];
       json['platforms'].forEach((v) {
         platforms.add(new Platforms.fromJson(v));
       });
     }
     if (json['stores'] != null) {
-      stores = new List<Stores>();
+      stores = <Stores>[];
       json['stores'].forEach((v) {
         stores.add(new Stores.fromJson(v));
       });
@@ -133,7 +132,7 @@ class GameResults {
     rating = json['rating'];
     ratingTop = json['rating_top'];
     if (json['ratings'] != null) {
-      ratings = new List<Ratings>();
+      ratings = <Ratings>[];
       json['ratings'].forEach((v) {
         ratings.add(new Ratings.fromJson(v));
       });
@@ -151,7 +150,7 @@ class GameResults {
     score = json['score'];
     clip = json['clip'] != null ? new Clip.fromJson(json['clip']) : null;
     if (json['tags'] != null) {
-      tags = new List<Tags>();
+      tags = <Tags>[];
       json['tags'].forEach((v) {
         tags.add(new Tags.fromJson(v));
       });
@@ -165,7 +164,7 @@ class GameResults {
     saturatedColor = json['saturated_color'];
     dominantColor = json['dominant_color'];
     if (json['short_screenshots'] != null) {
-      shortScreenshots = new List<ShortScreenshots>();
+      shortScreenshots = <ShortScreenshots>[];
       json['short_screenshots'].forEach((v) {
         shortScreenshots.add(new ShortScreenshots.fromJson(v));
       });
@@ -319,11 +318,11 @@ class AddedByStatus {
 
   AddedByStatus(
       {this.toplay,
-        this.yet,
-        this.owned,
-        this.beaten,
-        this.dropped,
-        this.playing});
+      this.yet,
+      this.owned,
+      this.beaten,
+      this.dropped,
+      this.playing});
 
   AddedByStatus.fromJson(Map<String, dynamic> json) {
     toplay = json['toplay'];
@@ -405,11 +404,11 @@ class Tags {
 
   Tags(
       {this.id,
-        this.name,
-        this.slug,
-        this.language,
-        this.gamesCount,
-        this.imageBackground});
+      this.name,
+      this.slug,
+      this.language,
+      this.gamesCount,
+      this.imageBackground});
 
   Tags.fromJson(Map<String, dynamic> json) {
     id = json['id'];

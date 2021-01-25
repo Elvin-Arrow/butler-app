@@ -2,11 +2,13 @@ import 'http_request.dart';
 
 class PodcastService {
   Future<PodcastSearchResult> getPodcastSearch(String query) async {
-    final url = "https://api.podcastindex.org/api/1.0/search/byterm?q=$query&pretty";
+    final url =
+        "https://api.podcastindex.org/api/1.0/search/byterm?q=$query&pretty";
 
     final podcastSearchResponse = await getData(url);
 
-    PodcastSearchResult podcastSearchResult = PodcastSearchResult.fromJson(podcastSearchResponse);
+    PodcastSearchResult podcastSearchResult =
+        PodcastSearchResult.fromJson(podcastSearchResponse);
     return podcastSearchResult;
   }
 }
@@ -24,7 +26,7 @@ class PodcastSearchResult {
   PodcastSearchResult.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     if (json['feeds'] != null) {
-      feeds = new List<Feeds>();
+      feeds = <Feeds>[];
       json['feeds'].forEach((v) {
         feeds.add(new Feeds.fromJson(v));
       });
@@ -77,31 +79,31 @@ class Feeds {
 
   Feeds(
       {this.id,
-        this.title,
-        this.url,
-        this.originalUrl,
-        this.link,
-        this.description,
-        this.author,
-        this.ownerName,
-        this.image,
-        this.artwork,
-        this.lastUpdateTime,
-        this.lastCrawlTime,
-        this.lastParseTime,
-        this.lastGoodHttpStatusTime,
-        this.lastHttpStatus,
-        this.contentType,
-        this.itunesId,
-        this.generator,
-        this.language,
-        this.type,
-        this.dead,
-        this.crawlErrors,
-        this.parseErrors,
-        this.categories,
-        this.locked,
-        this.imageUrlHash});
+      this.title,
+      this.url,
+      this.originalUrl,
+      this.link,
+      this.description,
+      this.author,
+      this.ownerName,
+      this.image,
+      this.artwork,
+      this.lastUpdateTime,
+      this.lastCrawlTime,
+      this.lastParseTime,
+      this.lastGoodHttpStatusTime,
+      this.lastHttpStatus,
+      this.contentType,
+      this.itunesId,
+      this.generator,
+      this.language,
+      this.type,
+      this.dead,
+      this.crawlErrors,
+      this.parseErrors,
+      this.categories,
+      this.locked,
+      this.imageUrlHash});
 
   Feeds.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -189,4 +191,3 @@ class Categories {
     return data;
   }
 }
-

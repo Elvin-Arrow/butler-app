@@ -156,7 +156,7 @@ class VolumeInfo {
     publisher = json['publisher'];
     description = json['description'];
     if (json['industryIdentifiers'] != null) {
-      industryIdentifiers = new List<IndustryIdentifiers>();
+      industryIdentifiers = <IndustryIdentifiers>[];
       json['industryIdentifiers'].forEach((v) {
         industryIdentifiers.add(new IndustryIdentifiers.fromJson(v));
       });
