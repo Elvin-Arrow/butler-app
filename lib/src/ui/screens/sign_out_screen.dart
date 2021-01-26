@@ -2,6 +2,7 @@ import 'package:butler_app/src/resources/services/auth_service.dart';
 import 'package:butler_app/src/resources/utilities/constants.dart';
 import 'package:butler_app/src/ui/widgets/rounded_rectanlge_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SignOutScreen extends StatefulWidget {
@@ -14,8 +15,8 @@ class SignOutScreen extends StatefulWidget {
 class _SignOutScreenState extends State<SignOutScreen> {
 
   Future<String> _getUserName() async {
-    return await Auth().getCurrentUser()
-        .then((user) => user.email);
+    User user = await Auth().getCurrentUser();
+    return user.email;
   }
 
   @override
@@ -26,6 +27,9 @@ class _SignOutScreenState extends State<SignOutScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
+            Container(
+              height: MediaQuery.of(context).size.height/2 - 100,
+            ),
             FutureBuilder(
               future: _getUserName(),
               builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
