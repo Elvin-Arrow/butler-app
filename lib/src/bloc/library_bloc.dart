@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:butler_app/src/models/search_result.dart';
 import 'package:meta/meta.dart';
 
 import 'package:butler_app/src/resources/library_repository.dart';
