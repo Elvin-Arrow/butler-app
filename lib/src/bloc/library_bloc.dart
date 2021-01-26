@@ -1,8 +1,6 @@
 import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-
 import 'package:butler_app/src/resources/library_repository.dart';
 import 'package:butler_app/src/resources/services/movie_service.dart';
 
@@ -12,6 +10,7 @@ part 'library_state.dart';
 class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
   String _searchQuery;
   final LibraryRepository _libraryRepository;
+  SearchState _searchState;
 
   LibraryBloc(
     this._libraryRepository,
@@ -21,14 +20,18 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
   Stream<LibraryState> mapEventToState(
     LibraryEvent event,
   ) async* {
-    if (event is SearchEntryEvent) {
+    if (event is SearchTypeSelectEvent) {
+      _searchState = SearchState(event.searchType);
+
+      yield SearchState(event.searchType);
+    } else if (event is SearchEntryEvent) {
       _searchQuery = event.searchQuery;
     } else if (event is SearchEvent) {
-      yield SearchingLibrary();
+      yield SearchingLibrary(_searchState.searchType);
 
       final searchResult = await _invokeSearchAPI(event.searchType);
 
-      yield MovieResultState(searchResult);
+      yield MovieResultState(_searchState.searchType, searchResult);
     }
   }
 
