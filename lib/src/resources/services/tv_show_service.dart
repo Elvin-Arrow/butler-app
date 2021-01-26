@@ -11,7 +11,7 @@ class TVShowService {
     final tvSearchResponse = await getData(searchUrl);
     TVShowSearchResult tvShowSearchResult =
         TVShowSearchResult.fromJson(tvSearchResponse);
-    return tvSearchResponse;
+    return tvShowSearchResult;
   }
 
   Future<TVShowDetail> getTVShowDetail(int id) async {

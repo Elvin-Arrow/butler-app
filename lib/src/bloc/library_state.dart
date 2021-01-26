@@ -38,23 +38,9 @@ class SearchingLibrary extends LibraryState {
 }
 
 class MovieResultState extends LibraryState {
-  final SearchType searchType;
-  final MovieSearchResult searchResult;
+  final MovieState movieState;
 
   MovieResultState(
-    this.searchType,
-    this.searchResult,
+    this.movieState,
   );
-
-  @override
-  bool operator ==(Object o) {
-    if (identical(this, o)) return true;
-
-    return o is MovieResultState &&
-        o.searchType == searchType &&
-        o.searchResult == searchResult;
-  }
-
-  @override
-  int get hashCode => searchType.hashCode ^ searchResult.hashCode;
 }

@@ -69,7 +69,7 @@ class SearchScreen extends StatelessWidget {
                 child: CircularProgressIndicator(),
               );
             } else if (state is MovieResultState) {
-              result = state.searchResult.results;
+              result = state.movieState.searchResult.results;
               return ListView.builder(
                 itemBuilder: (_, index) {
                   // return Text(
@@ -153,8 +153,7 @@ class SearchScreen extends StatelessWidget {
                                         child: Center(
                                           child: Text(
                                             MovieGenre.getFirstGenreName(
-                                                result[index]
-                                            ),
+                                                result[index]),
                                             style: TextStyle(
                                                 fontSize: 12,
                                                 color: kDefaultIconColour),
@@ -174,8 +173,7 @@ class SearchScreen extends StatelessWidget {
                                         child: Center(
                                           child: Text(
                                             MovieGenre.getSecondGenreName(
-                                                result[index]
-                                            ),
+                                                result[index]),
                                             style: TextStyle(
                                                 fontSize: 12,
                                                 color: kDefaultIconColour),
@@ -189,77 +187,7 @@ class SearchScreen extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.start,
                             ),
-                          )
-                          // SizedBox(
-                          //   child: ListTile(
-                          //     leading: Container(
-                          //       height: 120,
-                          //       width: 80,
-                          //       decoration: BoxDecoration(
-                          //         borderRadius: BorderRadius.circular(8),
-                          //           color: kDefaultIconColour
-                          //       ),
-                          //     ),
-                          //     title: AutoSizeText(
-                          //       result[index].title,
-                          //       style: TextStyle(color: kDefaultIconColour, fontSize: 20),
-                          //       maxLines: 1,
-                          //       overflow: TextOverflow.ellipsis,
-                          //       minFontSize: 18,
-                          //     ),
-                          //     subtitle: Padding(
-                          //       padding: const EdgeInsets.only(top: 6.0),
-                          //       child: Row(
-                          //         mainAxisAlignment: MainAxisAlignment.start,
-                          //         children: [
-                          //           Container(
-                          //             width: 66,
-                          //             height: 18,
-                          //             decoration: BoxDecoration(
-                          //               borderRadius: BorderRadius.circular(22),
-                          //               color: kDullBlueColor
-                          //             ),
-                          //             child: Center(
-                          //               child: Text(
-                          //                 MovieGenre.getGenreName(result[index].genreIds[0]),
-                          //                 style: TextStyle(
-                          //                   fontSize: 12,
-                          //                   color: kDefaultIconColour
-                          //                 ),
-                          //               ),
-                          //             ),
-                          //           ),
-                          //           SizedBox(
-                          //             width: 10,
-                          //           ),
-                          //           Container(
-                          //             width: 66,
-                          //             height: 18,
-                          //             decoration: BoxDecoration(
-                          //                 borderRadius: BorderRadius.circular(22),
-                          //                 color: kDullBlueColor
-                          //             ),
-                          //             child: Center(
-                          //               child: Text(
-                          //                 MovieGenre.getGenreName(result[index].genreIds[1]),
-                          //                 style: TextStyle(
-                          //                     fontSize: 12,
-                          //                     color: kDefaultIconColour
-                          //                 ),
-                          //               ),
-                          //             ),
-                          //           )
-                          //         ],
-                          //       ),
-                          //     ),
-                          //     trailing: Icon(
-                          //       Icons.add,
-                          //       color: kDefaultIconColour,
-                          //     ),
-                          //   ),
-                          //   width: size.width - 26,
-                          //   height: 60,
-                          // ),
+                          ),
                         ],
                       ),
                       SizedBox(
@@ -366,7 +294,7 @@ class SearchScreen extends StatelessWidget {
     } else if (state is SearchingLibrary) {
       searchType = state.searchType;
     } else if (state is MovieResultState) {
-      searchType = state.searchType;
+      searchType = state.movieState.searchType;
     }
 
     return searchType;

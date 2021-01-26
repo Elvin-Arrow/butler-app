@@ -1,13 +1,13 @@
 import 'dart:async';
-import 'package:bloc/bloc.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:butler_app/src/resources/library_repository.dart';
-import 'package:butler_app/src/resources/services/movie_service.dart';
+import 'package:butler_app/src/models/movie_state.dart';
 
 part 'library_event.dart';
 part 'library_state.dart';
 
-class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
+class LibraryBloc extends HydratedBloc<LibraryEvent, LibraryState> {
   String _searchQuery;
   final LibraryRepository _libraryRepository;
   SearchState _searchState;
@@ -32,13 +32,13 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
       final searchResult = await _invokeSearchAPI(event.searchType);
 
       if (event.searchType == SearchType.Movie) {
-        yield MovieResultState(_searchState.searchType, searchResult);
-      }
-      else if (event.searchType == SearchType.Book) {}
-      else if (event.searchType == SearchType.Game) {}
-      else if (event.searchType == SearchType.Music) {}
-      else if (event.searchType == SearchType.Podcast) {}
-      else if (event.searchType == SearchType.TVShow) {}
+        final movieState = MovieState(_searchState.searchType, searchResult);
+        yield MovieResultState(movieState);
+      } else if (event.searchType == SearchType.Book) {
+      } else if (event.searchType == SearchType.Game) {
+      } else if (event.searchType == SearchType.Music) {
+      } else if (event.searchType == SearchType.Podcast) {
+      } else if (event.searchType == SearchType.TVShow) {}
     }
   }
 
@@ -52,31 +52,54 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
         return movieSearchResult;
         break;
       case SearchType.Book:
-      final bookSearchResult =
-          await _libraryRepository.searchBook(_searchQuery);
-      return bookSearchResult;
+        final bookSearchResult =
+            await _libraryRepository.searchBook(_searchQuery);
+        return bookSearchResult;
         break;
       case SearchType.Game:
-      final gameSearchResult =
-          await _libraryRepository.searchGame(_searchQuery);
-      return gameSearchResult;
+        final gameSearchResult =
+            await _libraryRepository.searchGame(_searchQuery);
+        return gameSearchResult;
         break;
       case SearchType.Music:
-      final musicSearchResult =
-          await _libraryRepository.searchMusic(_searchQuery);
-      return musicSearchResult;
+        final musicSearchResult =
+            await _libraryRepository.searchMusic(_searchQuery);
+        return musicSearchResult;
         break;
       case SearchType.Podcast:
-      final podcastSearchResult =
-          await _libraryRepository.searchPodcast(_searchQuery);
-      return podcastSearchResult;
+        final podcastSearchResult =
+            await _libraryRepository.searchPodcast(_searchQuery);
+        return podcastSearchResult;
         break;
       case SearchType.TVShow:
-      final tvShowSearchResult =
-          await _libraryRepository.searchTvShow(_searchQuery);
-      return tvShowSearchResult;
+        final tvShowSearchResult =
+            await _libraryRepository.searchTvShow(_searchQuery);
+        return tvShowSearchResult;
         break;
       default:
+    }
+  }
+
+  @override
+  LibraryState fromJson(Map<String, dynamic> json) {
+    try {
+      print('Attempting to fetch previous state');
+      final searchResult = MovieState.fromJson(json);
+      print('State fetched');
+      return MovieResultState(searchResult);
+    } catch (_) {
+      print('Fetch failed');
+      return null;
+    }
+  }
+
+  @override
+  Map<String, dynamic> toJson(LibraryState state) {
+    if (state is MovieResultState) {
+      print('State stored');
+      return state.movieState.toJson();
+    } else {
+      return null;
     }
   }
 }
