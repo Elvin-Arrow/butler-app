@@ -43,4 +43,14 @@ class MovieResultState extends LibraryState {
   MovieResultState(
     this.movieState,
   );
+
+  @override
+  bool operator ==(Object o) {
+    if (identical(this, o)) return true;
+
+    return o is MovieResultState && o.movieState == movieState;
+  }
+
+  @override
+  int get hashCode => movieState.hashCode;
 }

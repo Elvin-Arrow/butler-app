@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:butler_app/src/resources/library_repository.dart';
@@ -83,12 +84,9 @@ class LibraryBloc extends HydratedBloc<LibraryEvent, LibraryState> {
   @override
   LibraryState fromJson(Map<String, dynamic> json) {
     try {
-      print('Attempting to fetch previous state');
       final searchResult = MovieState.fromJson(json);
-      print('State fetched');
       return MovieResultState(searchResult);
     } catch (_) {
-      print('Fetch failed');
       return null;
     }
   }
@@ -96,7 +94,6 @@ class LibraryBloc extends HydratedBloc<LibraryEvent, LibraryState> {
   @override
   Map<String, dynamic> toJson(LibraryState state) {
     if (state is MovieResultState) {
-      print('State stored');
       return state.movieState.toJson();
     } else {
       return null;
