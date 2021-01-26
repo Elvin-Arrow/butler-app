@@ -31,7 +31,14 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
 
       final searchResult = await _invokeSearchAPI(event.searchType);
 
-      yield MovieResultState(_searchState.searchType, searchResult);
+      if (event.searchType == SearchType.Movie) {
+        yield MovieResultState(_searchState.searchType, searchResult);
+      }
+      else if (event.searchType == SearchType.Book) {}
+      else if (event.searchType == SearchType.Game) {}
+      else if (event.searchType == SearchType.Music) {}
+      else if (event.searchType == SearchType.Podcast) {}
+      else if (event.searchType == SearchType.TVShow) {}
     }
   }
 

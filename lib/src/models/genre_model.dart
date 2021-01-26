@@ -42,4 +42,15 @@ class MovieGenre {
     }
     return getGenreName(genreId);
   }
+
+  static getFirstGenreName(Results result){
+    int genreId;
+    try {
+      genreId = result.genreIds[0];
+    }
+    catch (_) {
+      return '- -';
+    }
+    return getGenreName(genreId);
+  }
 }

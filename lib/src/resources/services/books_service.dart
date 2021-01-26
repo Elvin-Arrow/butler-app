@@ -122,7 +122,7 @@ class VolumeInfo {
   String canonicalVolumeLink;
   String publishedDate;
   int pageCount;
-  double averageRating;
+  String averageRating;
   int ratingsCount;
   String subtitle;
 
@@ -181,7 +181,7 @@ class VolumeInfo {
     canonicalVolumeLink = json['canonicalVolumeLink'];
     publishedDate = json['publishedDate'];
     pageCount = json['pageCount'];
-    averageRating = json['averageRating'];
+    averageRating = json['averageRating'].toString();
     ratingsCount = json['ratingsCount'];
     subtitle = json['subtitle'];
   }

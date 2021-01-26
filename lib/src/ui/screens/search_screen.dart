@@ -152,8 +152,9 @@ class SearchScreen extends StatelessWidget {
                                             color: kDullBlueColor),
                                         child: Center(
                                           child: Text(
-                                            MovieGenre.getGenreName(
-                                                result[index].genreIds[0]),
+                                            MovieGenre.getFirstGenreName(
+                                                result[index]
+                                            ),
                                             style: TextStyle(
                                                 fontSize: 12,
                                                 color: kDefaultIconColour),
