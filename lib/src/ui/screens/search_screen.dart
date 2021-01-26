@@ -3,7 +3,10 @@ import 'package:butler_app/src/bloc/library_bloc.dart';
 import 'package:butler_app/src/models/genre_model.dart';
 import 'package:butler_app/src/resources/library_repository.dart';
 import 'package:butler_app/src/resources/search_repository.dart';
-import 'package:butler_app/src/resources/services/movie_service.dart';
+import 'package:butler_app/src/resources/services/books_service.dart';
+import 'package:butler_app/src/resources/services/game_service.dart';
+import 'package:butler_app/src/resources/services/music_service.dart';
+import 'package:butler_app/src/resources/services/tv_show_service.dart';
 import 'package:butler_app/src/resources/utilities/constants.dart';
 import 'package:butler_app/src/ui/widgets/search_bar.dart';
 import 'package:flutter/material.dart';
@@ -63,146 +66,641 @@ class SearchScreen extends StatelessWidget {
         ),
         Expanded(
           child: BlocBuilder<LibraryBloc, LibraryState>(builder: (_, state) {
-            List<Results> result = [];
+            //List<Results> result = [];
+            List result = [];
             if (state is SearchingLibrary) {
               return Center(
                 child: CircularProgressIndicator(),
               );
             } else if (state is MovieResultState) {
               result = state.movieState.searchResult.results;
-              return ListView.builder(
-                itemBuilder: (_, index) {
-                  // return Text(
-                  //   result[index].title,
-                  //   style: TextStyle(color: Colors.white),
-                  // );
-                  return Column(
-                    children: [
-                      Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 1.0),
-                            child: Container(
-                              width: 1,
-                              height: 100,
-                              color: kSelectedIconColour,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: Container(
-                              height: 100,
-                              width: 80,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(6),
-                                  color: kDefaultIconColour),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: Column(
-                              children: [
-                                Container(
-                                  width: size.width - 150,
-                                  child: AutoSizeText(
-                                    result[index].title,
-                                    style: TextStyle(
-                                        color: kDefaultIconColour,
-                                        fontSize: 20),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    minFontSize: 18,
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 2.0),
-                                  child: Text(
-                                    'Popularity: ${SearchRepository().getPopularity(result[index].popularity)}',
-                                    style: TextStyle(
-                                        color: kDefaultIconColour,
-                                        fontSize: 12),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 2.0),
-                                  child: Text(
-                                    'Release Date: ${(result[index].releaseDate)}',
-                                    style: TextStyle(
-                                        color: kDefaultIconColour,
-                                        fontSize: 12),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        width: 66,
-                                        height: 18,
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(22),
-                                            color: kDullBlueColor),
-                                        child: Center(
-                                          child: Text(
-                                            MovieGenre.getFirstGenreName(
-                                                result[index]),
-                                            style: TextStyle(
-                                                fontSize: 12,
-                                                color: kDefaultIconColour),
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Container(
-                                        width: 66,
-                                        height: 18,
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(22),
-                                            color: kDullBlueColor),
-                                        child: Center(
-                                          child: Text(
-                                            MovieGenre.getSecondGenreName(
-                                                result[index]),
-                                            style: TextStyle(
-                                                fontSize: 12,
-                                                color: kDefaultIconColour),
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ],
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      )
-                    ],
-                  );
-                },
-                itemCount: result.length,
-              );
+              return getResultList(size, result);
+            }
+            else if (state is BookResultState) {
+              result = state.bookState.bookSearchResult.items;
+              return getResultListForBook(size, result);
+            }
+            else if (state is GameResultState) {
+              result = state.gameState.gameSearchResult.results;
+              return getResultListForGame(size, result);
+            }
+            else if (state is MusicResultState) {
+              result = state.musicState.musicSearchResult.artists;
+              return getResultListForMusic(size, result);
+            }
+            else if (state is PodcastResultState) {
+              result = state.podcastState.podcastSearchResult.feeds;
+              return getResultList(size, result);
+            }
+            else if (state is TvShowResultState) {
+              result = state.tvShowState.tvSearchResult.results;
+              return getResultListForTV(size, result);
             }
             return Container();
           }),
         ),
       ],
+    );
+  }
+
+  ListView getResultList(Size size, List result) {
+    return ListView.builder(
+      itemBuilder: (_, index) {
+        // return Text(
+        //   result[index].title,
+        //   style: TextStyle(color: Colors.white),
+        // );
+        return Column(
+          children: [
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 1.0),
+                  child: Container(
+                    width: 1,
+                    height: 100,
+                    color: kSelectedIconColour,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Container(
+                    height: 100,
+                    width: 80,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(6),
+                        color: kDefaultIconColour),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Column(
+                    children: [
+                      Container(
+                        width: size.width - 150,
+                        child: AutoSizeText(
+                          result[index].title,
+                          style: TextStyle(
+                              color: kDefaultIconColour, fontSize: 20),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          minFontSize: 18,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 2.0),
+                        child: Text(
+                          'Popularity: ${SearchRepository().getPopularity(result[index].popularity)}',
+                          style: TextStyle(
+                              color: kDefaultIconColour, fontSize: 12),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 2.0),
+                        child: Text(
+                          'Release Date: ${(result[index].releaseDate)}',
+                          style: TextStyle(
+                              color: kDefaultIconColour, fontSize: 12),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: 66,
+                              height: 18,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(22),
+                                  color: kDullBlueColor),
+                              child: Center(
+                                child: Text(
+                                  MovieGenre.getFirstGenreName(result[index]),
+                                  style: TextStyle(
+                                      fontSize: 12, color: kDefaultIconColour),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Container(
+                              width: 66,
+                              height: 18,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(22),
+                                  color: kDullBlueColor),
+                              child: Center(
+                                child: Text(
+                                  MovieGenre.getSecondGenreName(result[index]),
+                                  style: TextStyle(
+                                      fontSize: 12, color: kDefaultIconColour),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            )
+          ],
+        );
+      },
+      itemCount: result.length,
+    );
+  }
+
+  ListView getResultListForBook(Size size, List<BookItem> result) {
+    return ListView.builder(
+      itemBuilder: (_, index) {
+        // return Text(
+        //   result[index].title,
+        //   style: TextStyle(color: Colors.white),
+        // );
+        return Column(
+          children: [
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 1.0),
+                  child: Container(
+                    width: 1,
+                    height: 100,
+                    color: kSelectedIconColour,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Container(
+                    height: 100,
+                    width: 80,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(6),
+                        color: kDefaultIconColour),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Column(
+                    children: [
+                      Container(
+                        width: size.width - 150,
+                        child: AutoSizeText(
+                          result[index].volumeInfo.title,
+                          style: TextStyle(
+                              color: kDefaultIconColour, fontSize: 20),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          minFontSize: 18,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 2.0),
+                        child: Text(
+                          'Page Count: ${(result[index].volumeInfo.pageCount)}',
+                          style: TextStyle(
+                              color: kDefaultIconColour, fontSize: 12),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 2.0),
+                        child: Text(
+                          'Release Date: ${(result[index].volumeInfo.publishedDate)}',
+                          style: TextStyle(
+                              color: kDefaultIconColour, fontSize: 12),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: 150,
+                              height: 18,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(22),
+                                  color: kDullBlueColor),
+                              child: Center(
+                                child: Text(
+                                  result[index].volumeInfo.contentVersion,
+                                  style: TextStyle(
+                                      fontSize: 12, color: kDefaultIconColour),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            // Container(
+                            //   width: 66,
+                            //   height: 18,
+                            //   decoration: BoxDecoration(
+                            //       borderRadius: BorderRadius.circular(22),
+                            //       color: kDullBlueColor),
+                            //   child: Center(
+                            //     child: Text(
+                            //       result[index].volumeInfo.categories[1],
+                            //       style: TextStyle(
+                            //           fontSize: 12, color: kDefaultIconColour),
+                            //     ),
+                            //   ),
+                            // )
+                          ],
+                        ),
+                      ),
+                    ],
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            )
+          ],
+        );
+      },
+      itemCount: result.length,
+    );
+  }
+
+  ListView getResultListForGame(Size size, List<GameResults> result) {
+    return ListView.builder(
+      itemBuilder: (_, index) {
+        // return Text(
+        //   result[index].title,
+        //   style: TextStyle(color: Colors.white),
+        // );
+        return Column(
+          children: [
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 1.0),
+                  child: Container(
+                    width: 1,
+                    height: 100,
+                    color: kSelectedIconColour,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Container(
+                    height: 100,
+                    width: 80,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(6),
+                        color: kDefaultIconColour),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Column(
+                    children: [
+                      Container(
+                        width: size.width - 150,
+                        child: AutoSizeText(
+                          result[index].name,
+                          style: TextStyle(
+                              color: kDefaultIconColour, fontSize: 20),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          minFontSize: 18,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 2.0),
+                        child: Text(
+                          'Score: ${double.parse(result[index].score).toStringAsFixed(1)}',
+                          style: TextStyle(
+                              color: kDefaultIconColour, fontSize: 12),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 2.0),
+                        child: Text(
+                          'Release Date: ${(result[index].released)}',
+                          style: TextStyle(
+                              color: kDefaultIconColour, fontSize: 12),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: 60,
+                              height: 18,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(22),
+                                  color: kDullBlueColor),
+                              child: Center(
+                                child: Text(
+                                  result[index].platforms[0].platform.name,
+                                  style: TextStyle(
+                                      fontSize: 12, color: kDefaultIconColour),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            /*Container(
+                              width: 66,
+                              height: 18,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(22),
+                                  color: kDullBlueColor),
+                              child: Center(
+                                child: Text(
+                                  //result[index].platforms[1].platform.name,
+                                  '',
+                                  style: TextStyle(
+                                      fontSize: 12, color: kDefaultIconColour),
+                                ),
+                              ),
+                            )*/
+                          ],
+                        ),
+                      ),
+                    ],
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            )
+          ],
+        );
+      },
+      itemCount: result.length,
+    );
+  }
+
+  ListView getResultListForTV(Size size, List<TVResults> result) {
+    return ListView.builder(
+      itemBuilder: (_, index) {
+        // return Text(
+        //   result[index].title,
+        //   style: TextStyle(color: Colors.white),
+        // );
+        return Column(
+          children: [
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 1.0),
+                  child: Container(
+                    width: 1,
+                    height: 100,
+                    color: kSelectedIconColour,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Container(
+                    height: 100,
+                    width: 80,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(6),
+                        color: kDefaultIconColour),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Column(
+                    children: [
+                      Container(
+                        width: size.width - 150,
+                        child: AutoSizeText(
+                          result[index].name,
+                          style: TextStyle(
+                              color: kDefaultIconColour, fontSize: 20),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          minFontSize: 18,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 2.0),
+                        child: Text(
+                          'Vote Count: ${(result[index].voteCount.toString())}',
+                          style: TextStyle(
+                              color: kDefaultIconColour, fontSize: 12),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 2.0),
+                        child: Text(
+                          'Release Date: ${(result[index].firstAirDate)}',
+                          style: TextStyle(
+                              color: kDefaultIconColour, fontSize: 12),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: 106,
+                              height: 18,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(22),
+                                  color: kDullBlueColor),
+                              child: Center(
+                                child: Text(
+                                  'Language: ${result[index].originalLanguage}',
+                                  style: TextStyle(
+                                      fontSize: 12, color: kDefaultIconColour),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            /*Container(
+                              width: 66,
+                              height: 18,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(22),
+                                  color: kDullBlueColor),
+                              child: Center(
+                                child: Text(
+                                  MovieGenre.getSecondGenreName(result[index]),
+                                  style: TextStyle(
+                                      fontSize: 12, color: kDefaultIconColour),
+                                ),
+                              ),
+                            )*/
+                          ],
+                        ),
+                      ),
+                    ],
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            )
+          ],
+        );
+      },
+      itemCount: result.length,
+    );
+  }
+
+  ListView getResultListForMusic(Size size, List<Artists> result) {
+    return ListView.builder(
+      itemBuilder: (_, index) {
+        // return Text(
+        //   result[index].title,
+        //   style: TextStyle(color: Colors.white),
+        // );
+        return Column(
+          children: [
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 1.0),
+                  child: Container(
+                    width: 1,
+                    height: 100,
+                    color: kSelectedIconColour,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Container(
+                    height: 100,
+                    width: 80,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(6),
+                        color: kDefaultIconColour),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Column(
+                    children: [
+                      Container(
+                        width: size.width - 150,
+                        child: AutoSizeText(
+                          result[index].strArtist,
+                          style: TextStyle(
+                              color: kDefaultIconColour, fontSize: 20),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          minFontSize: 18,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 2.0),
+                        child: Text(
+                          'Band Formed: ${(result[index].intFormedYear)}',
+                          style: TextStyle(
+                              color: kDefaultIconColour, fontSize: 12),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 2.0),
+                        child: Text(
+                          'Born: ${(result[index].intBornYear)}',
+                          style: TextStyle(
+                              color: kDefaultIconColour, fontSize: 12),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: 106,
+                              height: 18,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(22),
+                                  color: kDullBlueColor),
+                              child: Center(
+                                child: Text(
+                                  'Members: ${result[index].intMembers}',
+                                  style: TextStyle(
+                                      fontSize: 12, color: kDefaultIconColour),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            /*Container(
+                              width: 66,
+                              height: 18,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(22),
+                                  color: kDullBlueColor),
+                              child: Center(
+                                child: Text(
+                                  MovieGenre.getSecondGenreName(result[index]),
+                                  style: TextStyle(
+                                      fontSize: 12, color: kDefaultIconColour),
+                                ),
+                              ),
+                            )*/
+                          ],
+                        ),
+                      ),
+                    ],
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            )
+          ],
+        );
+      },
+      itemCount: result.length,
     );
   }
 
@@ -295,6 +793,21 @@ class SearchScreen extends StatelessWidget {
       searchType = state.searchType;
     } else if (state is MovieResultState) {
       searchType = state.movieState.searchType;
+    }
+    else if (state is BookResultState) {
+      searchType = state.bookState.searchType;
+    }
+    else if (state is MusicResultState) {
+      searchType = state.musicState.searchType;
+    }
+    else if (state is PodcastResultState) {
+      searchType = state.podcastState.searchType;
+    }
+    else if (state is TvShowResultState) {
+      searchType = state.tvShowState.searchType;
+    }
+    else if (state is GameResultState) {
+      searchType = state.gameState.searchType;
     }
 
     return searchType;

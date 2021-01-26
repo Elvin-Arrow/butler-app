@@ -1,10 +1,14 @@
-import 'dart:async';
+// part of 'library_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:butler_app/src/models/book_state.dart';
+import 'package:butler_app/src/models/game_state.dart';
+import 'package:butler_app/src/models/music_state.dart';
+import 'package:butler_app/src/models/podcast_state.dart';
+import 'package:butler_app/src/models/tv_show_state.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:butler_app/src/resources/library_repository.dart';
 import 'package:butler_app/src/models/movie_state.dart';
-
 part 'library_event.dart';
 part 'library_state.dart';
 
@@ -36,10 +40,21 @@ class LibraryBloc extends HydratedBloc<LibraryEvent, LibraryState> {
         final movieState = MovieState(_searchState.searchType, searchResult);
         yield MovieResultState(movieState);
       } else if (event.searchType == SearchType.Book) {
+        final bookState = BookState(_searchState.searchType, searchResult);
+        yield BookResultState(bookState);
       } else if (event.searchType == SearchType.Game) {
+        final gameState = GameState(_searchState.searchType, searchResult);
+        yield GameResultState(gameState);
       } else if (event.searchType == SearchType.Music) {
+        final musicState = MusicState(_searchState.searchType, searchResult);
+        yield MusicResultState(musicState);
       } else if (event.searchType == SearchType.Podcast) {
-      } else if (event.searchType == SearchType.TVShow) {}
+        final podcastState = PodcastState(_searchState.searchType, searchResult);
+        yield PodcastResultState(podcastState);
+      } else if (event.searchType == SearchType.TVShow) {
+        final tvShowState = TVShowState(_searchState.searchType, searchResult);
+        yield TvShowResultState(tvShowState);
+      }
     }
   }
 
@@ -51,12 +66,7 @@ class LibraryBloc extends HydratedBloc<LibraryEvent, LibraryState> {
         final movieSearchResult =
             await _libraryRepository.searchMovie(_searchQuery);
         return movieSearchResult;
-        break;
-      case SearchType.Book:
-        final bookSearchResult =
-            await _libraryRepository.searchBook(_searchQuery);
-        return bookSearchResult;
-        break;
+       break;
       case SearchType.Game:
         final gameSearchResult =
             await _libraryRepository.searchGame(_searchQuery);
@@ -66,6 +76,11 @@ class LibraryBloc extends HydratedBloc<LibraryEvent, LibraryState> {
         final musicSearchResult =
             await _libraryRepository.searchMusic(_searchQuery);
         return musicSearchResult;
+        break;
+      case SearchType.Book:
+        final bookSearchResult =
+        await _libraryRepository.searchBook(_searchQuery);
+        return bookSearchResult;
         break;
       case SearchType.Podcast:
         final podcastSearchResult =

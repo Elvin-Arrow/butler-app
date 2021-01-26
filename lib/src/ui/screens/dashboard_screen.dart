@@ -15,7 +15,7 @@ class DashboardScreen extends StatelessWidget {
     return BlocListener<LibraryBloc, LibraryState>(
       listener: (_, state) {
         if (state is! LibraryInitial) {
-          Navigator.pushNamed(context, SearchScreen.id);
+          //Navigator.pushNamed(context, SearchScreen.id);
         }
       },
       child: Scaffold(
@@ -110,6 +110,6 @@ class DashboardScreen extends StatelessWidget {
     context.read<LibraryBloc>().add(SearchTypeSelectEvent(searchType));
 
     // Navigate to the next screen
-    // Navigator.pushNamed(context, SearchScreen.id);
+    Navigator.pushNamed(context, SearchScreen.id);
   }
 }

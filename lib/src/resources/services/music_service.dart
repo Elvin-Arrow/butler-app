@@ -3,7 +3,7 @@ import 'http_request.dart';
 class MusicService {
   Future<MusicSearchResult> getMusicSearch(String query) async {
     final url =
-        "https://api.podcastindex.org/api/1.0/search/byterm?q=$query&pretty";
+        "https://www.theaudiodb.com/api/v1/json/1/search.php?s=$query";
 
     final musicSearchResponse = await getData(url);
 
@@ -14,218 +14,225 @@ class MusicService {
 }
 
 class MusicSearchResult {
-  List<Data> data;
-  int total;
-  String next;
+  List<Artists> artists;
 
-  MusicSearchResult({this.data, this.total, this.next});
+  MusicSearchResult({this.artists});
 
   MusicSearchResult.fromJson(Map<String, dynamic> json) {
-    if (json['data'] != null) {
-      data = <Data>[];
-      json['data'].forEach((v) {
-        data.add(new Data.fromJson(v));
+    if (json['artists'] != null) {
+      artists = [];
+      json['artists'].forEach((v) {
+        artists.add(new Artists.fromJson(v));
       });
     }
-    total = json['total'];
-    next = json['next'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.data != null) {
-      data['data'] = this.data.map((v) => v.toJson()).toList();
+    if (this.artists != null) {
+      data['artists'] = this.artists.map((v) => v.toJson()).toList();
     }
-    data['total'] = this.total;
-    data['next'] = this.next;
     return data;
   }
 }
 
-class Data {
-  int id;
-  bool readable;
-  String title;
-  String titleShort;
-  String titleVersion;
-  String link;
-  int duration;
-  int rank;
-  bool explicitLyrics;
-  int explicitContentLyrics;
-  int explicitContentCover;
-  String preview;
-  String md5Image;
-  Artist artist;
-  Album album;
-  String type;
+class Artists {
+  String idArtist;
+  String strArtist;
+  Null strArtistStripped;
+  String strArtistAlternate;
+  String strLabel;
+  String idLabel;
+  String intFormedYear;
+  String intBornYear;
+  Null intDiedYear;
+  Null strDisbanded;
+  String strStyle;
+  String strGenre;
+  String strMood;
+  String strWebsite;
+  String strFacebook;
+  String strTwitter;
+  String strBiographyEN;
+  String strBiographyDE;
+  String strBiographyFR;
+  String strBiographyCN;
+  String strBiographyIT;
+  String strBiographyJP;
+  String strBiographyRU;
+  String strBiographyES;
+  String strBiographyPT;
+  String strBiographySE;
+  String strBiographyNL;
+  String strBiographyHU;
+  String strBiographyNO;
+  String strBiographyIL;
+  String strBiographyPL;
+  String strGender;
+  String intMembers;
+  String strCountry;
+  String strCountryCode;
+  String strArtistThumb;
+  String strArtistLogo;
+  String strArtistClearart;
+  String strArtistWideThumb;
+  String strArtistFanart;
+  String strArtistFanart2;
+  String strArtistFanart3;
+  String strArtistBanner;
+  String strMusicBrainzID;
+  String strLastFMChart;
+  String intCharted;
+  String strLocked;
 
-  Data(
-      {this.id,
-      this.readable,
-      this.title,
-      this.titleShort,
-      this.titleVersion,
-      this.link,
-      this.duration,
-      this.rank,
-      this.explicitLyrics,
-      this.explicitContentLyrics,
-      this.explicitContentCover,
-      this.preview,
-      this.md5Image,
-      this.artist,
-      this.album,
-      this.type});
+  Artists(
+      {this.idArtist,
+        this.strArtist,
+        this.strArtistStripped,
+        this.strArtistAlternate,
+        this.strLabel,
+        this.idLabel,
+        this.intFormedYear,
+        this.intBornYear,
+        this.intDiedYear,
+        this.strDisbanded,
+        this.strStyle,
+        this.strGenre,
+        this.strMood,
+        this.strWebsite,
+        this.strFacebook,
+        this.strTwitter,
+        this.strBiographyEN,
+        this.strBiographyDE,
+        this.strBiographyFR,
+        this.strBiographyCN,
+        this.strBiographyIT,
+        this.strBiographyJP,
+        this.strBiographyRU,
+        this.strBiographyES,
+        this.strBiographyPT,
+        this.strBiographySE,
+        this.strBiographyNL,
+        this.strBiographyHU,
+        this.strBiographyNO,
+        this.strBiographyIL,
+        this.strBiographyPL,
+        this.strGender,
+        this.intMembers,
+        this.strCountry,
+        this.strCountryCode,
+        this.strArtistThumb,
+        this.strArtistLogo,
+        this.strArtistClearart,
+        this.strArtistWideThumb,
+        this.strArtistFanart,
+        this.strArtistFanart2,
+        this.strArtistFanart3,
+        this.strArtistBanner,
+        this.strMusicBrainzID,
+        this.strLastFMChart,
+        this.intCharted,
+        this.strLocked});
 
-  Data.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    readable = json['readable'];
-    title = json['title'];
-    titleShort = json['title_short'];
-    titleVersion = json['title_version'];
-    link = json['link'];
-    duration = json['duration'];
-    rank = json['rank'];
-    explicitLyrics = json['explicit_lyrics'];
-    explicitContentLyrics = json['explicit_content_lyrics'];
-    explicitContentCover = json['explicit_content_cover'];
-    preview = json['preview'];
-    md5Image = json['md5_image'];
-    artist =
-        json['artist'] != null ? new Artist.fromJson(json['artist']) : null;
-    album = json['album'] != null ? new Album.fromJson(json['album']) : null;
-    type = json['type'];
+  Artists.fromJson(Map<String, dynamic> json) {
+    idArtist = json['idArtist'];
+    strArtist = json['strArtist'];
+    strArtistStripped = json['strArtistStripped'];
+    strArtistAlternate = json['strArtistAlternate'];
+    strLabel = json['strLabel'];
+    idLabel = json['idLabel'];
+    intFormedYear = json['intFormedYear'];
+    intBornYear = json['intBornYear'];
+    intDiedYear = json['intDiedYear'];
+    strDisbanded = json['strDisbanded'];
+    strStyle = json['strStyle'];
+    strGenre = json['strGenre'];
+    strMood = json['strMood'];
+    strWebsite = json['strWebsite'];
+    strFacebook = json['strFacebook'];
+    strTwitter = json['strTwitter'];
+    strBiographyEN = json['strBiographyEN'];
+    strBiographyDE = json['strBiographyDE'];
+    strBiographyFR = json['strBiographyFR'];
+    strBiographyCN = json['strBiographyCN'];
+    strBiographyIT = json['strBiographyIT'];
+    strBiographyJP = json['strBiographyJP'];
+    strBiographyRU = json['strBiographyRU'];
+    strBiographyES = json['strBiographyES'];
+    strBiographyPT = json['strBiographyPT'];
+    strBiographySE = json['strBiographySE'];
+    strBiographyNL = json['strBiographyNL'];
+    strBiographyHU = json['strBiographyHU'];
+    strBiographyNO = json['strBiographyNO'];
+    strBiographyIL = json['strBiographyIL'];
+    strBiographyPL = json['strBiographyPL'];
+    strGender = json['strGender'];
+    intMembers = json['intMembers'];
+    strCountry = json['strCountry'];
+    strCountryCode = json['strCountryCode'];
+    strArtistThumb = json['strArtistThumb'];
+    strArtistLogo = json['strArtistLogo'];
+    strArtistClearart = json['strArtistClearart'];
+    strArtistWideThumb = json['strArtistWideThumb'];
+    strArtistFanart = json['strArtistFanart'];
+    strArtistFanart2 = json['strArtistFanart2'];
+    strArtistFanart3 = json['strArtistFanart3'];
+    strArtistBanner = json['strArtistBanner'];
+    strMusicBrainzID = json['strMusicBrainzID'];
+    strLastFMChart = json['strLastFMChart'];
+    intCharted = json['intCharted'];
+    strLocked = json['strLocked'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['readable'] = this.readable;
-    data['title'] = this.title;
-    data['title_short'] = this.titleShort;
-    data['title_version'] = this.titleVersion;
-    data['link'] = this.link;
-    data['duration'] = this.duration;
-    data['rank'] = this.rank;
-    data['explicit_lyrics'] = this.explicitLyrics;
-    data['explicit_content_lyrics'] = this.explicitContentLyrics;
-    data['explicit_content_cover'] = this.explicitContentCover;
-    data['preview'] = this.preview;
-    data['md5_image'] = this.md5Image;
-    if (this.artist != null) {
-      data['artist'] = this.artist.toJson();
-    }
-    if (this.album != null) {
-      data['album'] = this.album.toJson();
-    }
-    data['type'] = this.type;
-    return data;
-  }
-}
-
-class Artist {
-  int id;
-  String name;
-  String link;
-  String picture;
-  String pictureSmall;
-  String pictureMedium;
-  String pictureBig;
-  String pictureXl;
-  String tracklist;
-  String type;
-
-  Artist(
-      {this.id,
-      this.name,
-      this.link,
-      this.picture,
-      this.pictureSmall,
-      this.pictureMedium,
-      this.pictureBig,
-      this.pictureXl,
-      this.tracklist,
-      this.type});
-
-  Artist.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    link = json['link'];
-    picture = json['picture'];
-    pictureSmall = json['picture_small'];
-    pictureMedium = json['picture_medium'];
-    pictureBig = json['picture_big'];
-    pictureXl = json['picture_xl'];
-    tracklist = json['tracklist'];
-    type = json['type'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['link'] = this.link;
-    data['picture'] = this.picture;
-    data['picture_small'] = this.pictureSmall;
-    data['picture_medium'] = this.pictureMedium;
-    data['picture_big'] = this.pictureBig;
-    data['picture_xl'] = this.pictureXl;
-    data['tracklist'] = this.tracklist;
-    data['type'] = this.type;
-    return data;
-  }
-}
-
-class Album {
-  int id;
-  String title;
-  String cover;
-  String coverSmall;
-  String coverMedium;
-  String coverBig;
-  String coverXl;
-  String md5Image;
-  String tracklist;
-  String type;
-
-  Album(
-      {this.id,
-      this.title,
-      this.cover,
-      this.coverSmall,
-      this.coverMedium,
-      this.coverBig,
-      this.coverXl,
-      this.md5Image,
-      this.tracklist,
-      this.type});
-
-  Album.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    title = json['title'];
-    cover = json['cover'];
-    coverSmall = json['cover_small'];
-    coverMedium = json['cover_medium'];
-    coverBig = json['cover_big'];
-    coverXl = json['cover_xl'];
-    md5Image = json['md5_image'];
-    tracklist = json['tracklist'];
-    type = json['type'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['title'] = this.title;
-    data['cover'] = this.cover;
-    data['cover_small'] = this.coverSmall;
-    data['cover_medium'] = this.coverMedium;
-    data['cover_big'] = this.coverBig;
-    data['cover_xl'] = this.coverXl;
-    data['md5_image'] = this.md5Image;
-    data['tracklist'] = this.tracklist;
-    data['type'] = this.type;
+    data['idArtist'] = this.idArtist;
+    data['strArtist'] = this.strArtist;
+    data['strArtistStripped'] = this.strArtistStripped;
+    data['strArtistAlternate'] = this.strArtistAlternate;
+    data['strLabel'] = this.strLabel;
+    data['idLabel'] = this.idLabel;
+    data['intFormedYear'] = this.intFormedYear;
+    data['intBornYear'] = this.intBornYear;
+    data['intDiedYear'] = this.intDiedYear;
+    data['strDisbanded'] = this.strDisbanded;
+    data['strStyle'] = this.strStyle;
+    data['strGenre'] = this.strGenre;
+    data['strMood'] = this.strMood;
+    data['strWebsite'] = this.strWebsite;
+    data['strFacebook'] = this.strFacebook;
+    data['strTwitter'] = this.strTwitter;
+    data['strBiographyEN'] = this.strBiographyEN;
+    data['strBiographyDE'] = this.strBiographyDE;
+    data['strBiographyFR'] = this.strBiographyFR;
+    data['strBiographyCN'] = this.strBiographyCN;
+    data['strBiographyIT'] = this.strBiographyIT;
+    data['strBiographyJP'] = this.strBiographyJP;
+    data['strBiographyRU'] = this.strBiographyRU;
+    data['strBiographyES'] = this.strBiographyES;
+    data['strBiographyPT'] = this.strBiographyPT;
+    data['strBiographySE'] = this.strBiographySE;
+    data['strBiographyNL'] = this.strBiographyNL;
+    data['strBiographyHU'] = this.strBiographyHU;
+    data['strBiographyNO'] = this.strBiographyNO;
+    data['strBiographyIL'] = this.strBiographyIL;
+    data['strBiographyPL'] = this.strBiographyPL;
+    data['strGender'] = this.strGender;
+    data['intMembers'] = this.intMembers;
+    data['strCountry'] = this.strCountry;
+    data['strCountryCode'] = this.strCountryCode;
+    data['strArtistThumb'] = this.strArtistThumb;
+    data['strArtistLogo'] = this.strArtistLogo;
+    data['strArtistClearart'] = this.strArtistClearart;
+    data['strArtistWideThumb'] = this.strArtistWideThumb;
+    data['strArtistFanart'] = this.strArtistFanart;
+    data['strArtistFanart2'] = this.strArtistFanart2;
+    data['strArtistFanart3'] = this.strArtistFanart3;
+    data['strArtistBanner'] = this.strArtistBanner;
+    data['strMusicBrainzID'] = this.strMusicBrainzID;
+    data['strLastFMChart'] = this.strLastFMChart;
+    data['intCharted'] = this.intCharted;
+    data['strLocked'] = this.strLocked;
     return data;
   }
 }

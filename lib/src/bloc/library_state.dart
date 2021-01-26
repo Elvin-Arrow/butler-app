@@ -54,3 +54,33 @@ class MovieResultState extends LibraryState {
   @override
   int get hashCode => movieState.hashCode;
 }
+
+class BookResultState extends LibraryState {
+  final BookState bookState;
+
+  BookResultState(this.bookState);
+}
+
+class GameResultState extends LibraryState {
+  final GameState gameState;
+
+  GameResultState(this.gameState);
+}
+
+class PodcastResultState extends LibraryState{
+  final PodcastState podcastState;
+
+  PodcastResultState(this.podcastState);
+}
+
+class TvShowResultState extends LibraryState {
+  final TVShowState tvShowState;
+
+  TvShowResultState(this.tvShowState);
+}
+
+class MusicResultState extends LibraryState {
+  final MusicState musicState;
+
+  MusicResultState(this.musicState);
+}

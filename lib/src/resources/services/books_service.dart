@@ -152,7 +152,6 @@ class VolumeInfo {
 
   VolumeInfo.fromJson(Map<String, dynamic> json) {
     title = json['title'];
-    authors = json['authors'].cast<String>();
     publisher = json['publisher'];
     description = json['description'];
     if (json['industryIdentifiers'] != null) {
@@ -165,7 +164,6 @@ class VolumeInfo {
         ? new ReadingModes.fromJson(json['readingModes'])
         : null;
     printType = json['printType'];
-    categories = json['categories'].cast<String>();
     maturityRating = json['maturityRating'];
     allowAnonLogging = json['allowAnonLogging'];
     contentVersion = json['contentVersion'];
