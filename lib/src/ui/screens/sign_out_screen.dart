@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:butler_app/src/resources/services/auth_service.dart';
 import 'package:butler_app/src/resources/utilities/constants.dart';
 import 'package:butler_app/src/ui/widgets/rounded_rectanlge_button.dart';
@@ -37,8 +38,28 @@ class _SignOutScreenState extends State<SignOutScreen> {
                  return CircularProgressIndicator();
                }
                else {
-                 return Text(
-                   snapshot.data
+                 return Padding(
+                   padding: const EdgeInsets.all(18.0),
+                   child: Container(
+                     height: 100,
+                     width: MediaQuery.of(context).size.width,
+                     decoration: BoxDecoration(
+                       color: kDullBlueColor,
+                       borderRadius: BorderRadius.circular(42)
+                     ),
+                     child: Center(
+                       child: AutoSizeText(
+                         snapshot.data,
+                         style: TextStyle(
+                           fontStyle: FontStyle.italic,
+                           color: kDefaultIconColour,
+                           fontSize: 32,
+                         ),
+                         overflow: TextOverflow.ellipsis,
+                         maxLines: 2,
+                       ),
+                     ),
+                   ),
                  );
                }
             },),
