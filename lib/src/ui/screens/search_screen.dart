@@ -67,8 +67,8 @@ class SearchScreen extends StatelessWidget {
               return Center(
                 child: CircularProgressIndicator(),
               );
-            } else if (state is ResultState) {
-              result = state.movieSearchResult.results;
+            } else if (state is MovieResultState) {
+              result = state.searchResult.results;
               return ListView.builder(
                 itemBuilder: (_, index) {
                   return Text(
@@ -159,12 +159,14 @@ class SearchScreen extends StatelessWidget {
   }
 
   /// Method to get the search type based on the current content state.
+  /// If none of the checked state match, the method will return the
+  /// movie search type.
   ///
   SearchType _getSearchType(MenuState state) {
     SearchType searchType;
 
-    if (state is MovieState) {
-      searchType = SearchType.Movie;
+    if (state is TVShowState) {
+      searchType = SearchType.TVShow;
     } else if (state is PodcastState) {
       searchType = SearchType.Podcast;
     } else if (state is MusicState) {
@@ -174,7 +176,7 @@ class SearchScreen extends StatelessWidget {
     } else if (state is BookState) {
       searchType = SearchType.Book;
     } else {
-      searchType = SearchType.TVShow;
+      searchType = SearchType.Movie;
     }
 
     return searchType;

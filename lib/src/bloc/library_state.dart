@@ -7,18 +7,18 @@ class LibraryInitial extends LibraryState {}
 
 class SearchingLibrary extends LibraryState {}
 
-class ResultState extends LibraryState {
-  final MovieSearchResult movieSearchResult;
+class MovieResultState extends LibraryState {
+  final MovieSearchResult searchResult;
 
-  ResultState(this.movieSearchResult);
+  MovieResultState(this.searchResult);
 
   @override
   bool operator ==(Object o) {
     if (identical(this, o)) return true;
 
-    return o is ResultState && o.movieSearchResult == movieSearchResult;
+    return o is MovieResultState && o.searchResult == searchResult;
   }
 
   @override
-  int get hashCode => movieSearchResult.hashCode;
+  int get hashCode => searchResult.hashCode;
 }

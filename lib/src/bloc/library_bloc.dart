@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:butler_app/src/models/search_result.dart';
 import 'package:meta/meta.dart';
 
 import 'package:butler_app/src/resources/library_repository.dart';
@@ -26,10 +27,37 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
     } else if (event is SearchEvent) {
       yield SearchingLibrary();
 
-      final movieSearchResult =
-          await _libraryRepository.searchMovie(_searchQuery);
+      final searchResult = await _invokeSearchAPI(event.searchType);
 
-      yield ResultState(movieSearchResult);
+      yield MovieResultState(searchResult);
+    }
+  }
+
+  /// Method to invoke search API based on selected search type.
+  ///
+  Future _invokeSearchAPI(SearchType searchType) async {
+    switch (searchType) {
+      case SearchType.Movie:
+        final movieSearchResult =
+            await _libraryRepository.searchMovie(_searchQuery);
+        return movieSearchResult;
+        break;
+      case SearchType.Book:
+        // TODO add book search API binding
+        break;
+      case SearchType.Game:
+        // TODO add game search API binding
+        break;
+      case SearchType.Music:
+        // TODO add music search API binding
+        break;
+      case SearchType.Podcast:
+        // TODO add podcast search API binding
+        break;
+      case SearchType.TVShow:
+        // TODO add TV show search API binding
+        break;
+      default:
     }
   }
 }
