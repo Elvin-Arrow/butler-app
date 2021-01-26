@@ -163,7 +163,6 @@ class AuthScreen extends StatelessWidget {
   ///
   List<Widget> _getRegistrationWidgets(BuildContext context) {
     return [
-      // TODO add the registration fields
       ModifiedTextField(
         label: 'Email',
         keyboardType: TextInputType.emailAddress,

@@ -6,6 +6,7 @@ import 'package:butler_app/src/ui/screens/auth_screen.dart';
 import 'package:butler_app/src/ui/screens/dashboard_screen.dart';
 import 'package:butler_app/src/ui/screens/landing_screen.dart';
 import 'package:butler_app/src/ui/screens/search_screen.dart';
+import 'package:butler_app/src/ui/screens/sign_out_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -22,12 +23,14 @@ class ButlerApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        initialRoute: LandingScreen.id,
+        debugShowCheckedModeBanner: false,
+        initialRoute: SignOutScreen.id,
         routes: {
           LandingScreen.id: (context) => LandingScreen(),
           AuthScreen.id: (context) => AuthScreen(),
           DashboardScreen.id: (context) => DashboardScreen(),
           SearchScreen.id: (context) => SearchScreen(),
+          SignOutScreen.id: (context) => SignOutScreen(),
         },
       ),
     );

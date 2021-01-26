@@ -64,7 +64,7 @@ class Results {
   String originalLanguage;
   String originalTitle;
   String overview;
-  double popularity;
+  String popularity;
   String posterPath;
   String releaseDate;
   String title;
@@ -96,7 +96,7 @@ class Results {
     originalLanguage = json['original_language'];
     originalTitle = json['original_title'];
     overview = json['overview'];
-    popularity = json['popularity'];
+    popularity = json['popularity'].toString();
     posterPath = json['poster_path'];
     releaseDate = json['release_date'];
     title = json['title'];

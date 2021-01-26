@@ -45,19 +45,29 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
         return movieSearchResult;
         break;
       case SearchType.Book:
-        // TODO add book search API binding
+      final bookSearchResult =
+          await _libraryRepository.searchBook(_searchQuery);
+      return bookSearchResult;
         break;
       case SearchType.Game:
-        // TODO add game search API binding
+      final gameSearchResult =
+          await _libraryRepository.searchGame(_searchQuery);
+      return gameSearchResult;
         break;
       case SearchType.Music:
-        // TODO add music search API binding
+      final musicSearchResult =
+          await _libraryRepository.searchMusic(_searchQuery);
+      return musicSearchResult;
         break;
       case SearchType.Podcast:
-        // TODO add podcast search API binding
+      final podcastSearchResult =
+          await _libraryRepository.searchPodcast(_searchQuery);
+      return podcastSearchResult;
         break;
       case SearchType.TVShow:
-        // TODO add TV show search API binding
+      final tvShowSearchResult =
+          await _libraryRepository.searchTvShow(_searchQuery);
+      return tvShowSearchResult;
         break;
       default:
     }

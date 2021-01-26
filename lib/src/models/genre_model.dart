@@ -1,3 +1,5 @@
+import 'package:butler_app/src/resources/services/movie_service.dart';
+
 class MovieGenre {
   static const Map<String, String> genres = {
     '28': "Action",
@@ -28,5 +30,16 @@ class MovieGenre {
     catch (err){
       return 'Unknown';
     }
+  }
+
+  static getSecondGenreName(Results result){
+    int genreId;
+    try {
+      genreId = result.genreIds[1];
+    }
+    catch (_) {
+      return '- -';
+    }
+    return getGenreName(genreId);
   }
 }

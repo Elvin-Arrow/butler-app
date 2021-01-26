@@ -4,7 +4,7 @@ import 'http_request.dart';
 import 'movie_service.dart';
 
 class TVShowService {
-  Future<TVShowSearchResult> getMovieSearchResult(String query) async {
+  Future<TVShowSearchResult> getTvSearchResult(String query) async {
     String searchUrl =
         'https://api.themoviedb.org/3/search/tv?api_key=${APIkey.tv_show_api_key}&language=en-US&page=1&include_adult=true&query=$query';
 
