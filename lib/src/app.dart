@@ -24,7 +24,7 @@ class ButlerApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: SignOutScreen.id,
+        initialRoute: LandingScreen.id,
         routes: {
           LandingScreen.id: (context) => LandingScreen(),
           AuthScreen.id: (context) => AuthScreen(),
