@@ -1,5 +1,4 @@
 import 'package:butler_app/src/bloc/library_bloc.dart';
-import 'package:butler_app/src/bloc/menu_bloc.dart';
 import 'package:butler_app/src/resources/library_repository.dart';
 import 'package:butler_app/src/resources/services/movie_service.dart';
 import 'package:butler_app/src/resources/utilities/constants.dart';
@@ -44,17 +43,16 @@ class SearchScreen extends StatelessWidget {
         Material(
           child: Search(
             onChanged: (val) {
-              BlocProvider.of<LibraryBloc>(context).add(SearchEntryEvent(val));
+              context.read<LibraryBloc>().add(SearchEntryEvent(val));
             },
           ),
         ),
-        BlocBuilder<MenuBloc, MenuState>(
+        BlocBuilder<LibraryBloc, LibraryState>(
           builder: (_, state) {
             return TextButton(
               onPressed: () {
-                context
-                    .read<LibraryBloc>()
-                    .add(SearchEvent(_getSearchType(state)));
+                SearchType searchType = _getSearchType(state);
+                context.read<LibraryBloc>().add(SearchEvent(searchType));
               },
               child: Text('Search'),
             );
@@ -91,7 +89,9 @@ class SearchScreen extends StatelessWidget {
   /// type.
   ///
   Widget _getNavLinks() {
-    return BlocBuilder<MenuBloc, MenuState>(builder: (_, state) {
+    return BlocBuilder<LibraryBloc, LibraryState>(builder: (_, state) {
+      SearchType searchType = _getSearchType(state);
+
       return Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
@@ -99,7 +99,7 @@ class SearchScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Icon(
               Icons.movie,
-              color: state is MovieState
+              color: searchType == SearchType.Movie
                   ? kSelectedIconColour
                   : kDefaultIconColour,
               size: 30,
@@ -109,8 +109,9 @@ class SearchScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Icon(
               Icons.menu_book,
-              color:
-                  state is BookState ? kSelectedIconColour : kDefaultIconColour,
+              color: searchType == SearchType.Book
+                  ? kSelectedIconColour
+                  : kDefaultIconColour,
               size: 30,
             ),
           ),
@@ -118,7 +119,7 @@ class SearchScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Icon(
               Icons.queue_music,
-              color: state is MusicState
+              color: searchType == SearchType.Music
                   ? kSelectedIconColour
                   : kDefaultIconColour,
               size: 30,
@@ -128,8 +129,9 @@ class SearchScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Icon(
               Icons.videogame_asset,
-              color:
-                  state is GameState ? kSelectedIconColour : kDefaultIconColour,
+              color: searchType == SearchType.Game
+                  ? kSelectedIconColour
+                  : kDefaultIconColour,
               size: 30,
             ),
           ),
@@ -137,7 +139,7 @@ class SearchScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Icon(
               Icons.tv,
-              color: state is TVShowState
+              color: searchType == SearchType.TVShow
                   ? kSelectedIconColour
                   : kDefaultIconColour,
               size: 30,
@@ -147,7 +149,7 @@ class SearchScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Icon(
               Icons.mic,
-              color: state is PodcastState
+              color: searchType == SearchType.Podcast
                   ? kSelectedIconColour
                   : kDefaultIconColour,
               size: 30,
@@ -162,21 +164,15 @@ class SearchScreen extends StatelessWidget {
   /// If none of the checked state match, the method will return the
   /// movie search type.
   ///
-  SearchType _getSearchType(MenuState state) {
-    SearchType searchType;
+  SearchType _getSearchType(LibraryState state) {
+    SearchType searchType = SearchType.Movie;
 
-    if (state is TVShowState) {
-      searchType = SearchType.TVShow;
-    } else if (state is PodcastState) {
-      searchType = SearchType.Podcast;
-    } else if (state is MusicState) {
-      searchType = SearchType.Music;
-    } else if (state is GameState) {
-      searchType = SearchType.Game;
-    } else if (state is BookState) {
-      searchType = SearchType.Book;
-    } else {
-      searchType = SearchType.Movie;
+    if (state is SearchState) {
+      searchType = state.searchType;
+    } else if (state is SearchingLibrary) {
+      searchType = state.searchType;
+    } else if (state is MovieResultState) {
+      searchType = state.searchType;
     }
 
     return searchType;

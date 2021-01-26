@@ -1,4 +1,5 @@
-import 'package:butler_app/src/bloc/menu_bloc.dart';
+import 'package:butler_app/src/bloc/library_bloc.dart';
+import 'package:butler_app/src/resources/library_repository.dart';
 import 'package:butler_app/src/resources/utilities/constants.dart';
 import 'package:butler_app/src/ui/screens/search_screen.dart';
 import 'package:circular_menu/circular_menu.dart';
@@ -41,8 +42,7 @@ class DashboardScreen extends StatelessWidget {
             items: [
               CircularMenuItem(
                 onTap: () {
-                  context.read<MenuBloc>().add(MovieEvent());
-                  _goToLibraryPage(context);
+                  _goToLibraryPage(context, SearchType.Movie);
                 },
                 icon: Icons.movie,
                 color: kBackgroundColor,
@@ -50,8 +50,7 @@ class DashboardScreen extends StatelessWidget {
               ),
               CircularMenuItem(
                 onTap: () {
-                  context.read<MenuBloc>().add(BookEvent());
-                  _goToLibraryPage(context);
+                  _goToLibraryPage(context, SearchType.Book);
                 },
                 icon: Icons.menu_book,
                 color: kBackgroundColor,
@@ -59,8 +58,7 @@ class DashboardScreen extends StatelessWidget {
               ),
               CircularMenuItem(
                 onTap: () {
-                  context.read<MenuBloc>().add(MusicEvent());
-                  _goToLibraryPage(context);
+                  _goToLibraryPage(context, SearchType.Music);
                 },
                 icon: Icons.queue_music,
                 color: kBackgroundColor,
@@ -68,8 +66,7 @@ class DashboardScreen extends StatelessWidget {
               ),
               CircularMenuItem(
                 onTap: () {
-                  context.read<MenuBloc>().add(GameEvent());
-                  _goToLibraryPage(context);
+                  _goToLibraryPage(context, SearchType.Game);
                 },
                 icon: Icons.videogame_asset,
                 color: kBackgroundColor,
@@ -77,8 +74,7 @@ class DashboardScreen extends StatelessWidget {
               ),
               CircularMenuItem(
                 onTap: () {
-                  context.read<MenuBloc>().add(TVShowEvent());
-                  _goToLibraryPage(context);
+                  _goToLibraryPage(context, SearchType.TVShow);
                 },
                 icon: Icons.tv,
                 color: kBackgroundColor,
@@ -86,8 +82,7 @@ class DashboardScreen extends StatelessWidget {
               ),
               CircularMenuItem(
                 onTap: () {
-                  context.read<MenuBloc>().add(PodcastEvent());
-                  _goToLibraryPage(context);
+                  _goToLibraryPage(context, SearchType.Podcast);
                 },
                 icon: Icons.mic,
                 color: kBackgroundColor,
@@ -100,9 +95,14 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 
-  /// Method to invoke the navigator object to transition to the
-  /// library page
-  void _goToLibraryPage(BuildContext context) {
+  /// Method to raise the selection event and to invoke the navigator
+  /// object to transition to the library page.
+  ///
+  void _goToLibraryPage(BuildContext context, SearchType searchType) {
+    // Raise selection event
+    context.read<LibraryBloc>().add(SearchTypeSelectEvent(searchType));
+
+    // Navigate to the next screen
     Navigator.pushNamed(context, SearchScreen.id);
   }
 }
