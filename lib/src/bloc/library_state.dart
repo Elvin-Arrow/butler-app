@@ -5,16 +5,20 @@ abstract class LibraryState {}
 
 class LibraryInitial extends LibraryState {}
 
-class SearchState extends LibraryState {
+class LibrarySearch extends LibraryState {}
+
+class LibrarySettings extends LibraryState {}
+
+class SearchTypeSelected extends LibraryState {
   final SearchType searchType;
 
-  SearchState(this.searchType);
+  SearchTypeSelected(this.searchType);
 
   @override
   bool operator ==(Object o) {
     if (identical(this, o)) return true;
 
-    return o is SearchState && o.searchType == searchType;
+    return o is SearchTypeSelected && o.searchType == searchType;
   }
 
   @override
@@ -67,7 +71,7 @@ class GameResultState extends LibraryState {
   GameResultState(this.gameState);
 }
 
-class PodcastResultState extends LibraryState{
+class PodcastResultState extends LibraryState {
   final PodcastState podcastState;
 
   PodcastResultState(this.podcastState);

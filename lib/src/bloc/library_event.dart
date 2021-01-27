@@ -3,6 +3,12 @@ part of 'library_bloc.dart';
 @immutable
 abstract class LibraryEvent {}
 
+class ShowHome extends LibraryEvent {}
+
+class ShowSearch extends LibraryEvent {}
+
+class ShowSettings extends LibraryEvent {}
+
 class SearchTypeSelectEvent extends LibraryEvent {
   final SearchType searchType;
 

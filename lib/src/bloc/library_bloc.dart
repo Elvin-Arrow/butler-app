@@ -12,10 +12,10 @@ import 'package:butler_app/src/models/movie_state.dart';
 part 'library_event.dart';
 part 'library_state.dart';
 
-class LibraryBloc extends HydratedBloc<LibraryEvent, LibraryState> {
+class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
   String _searchQuery;
   final LibraryRepository _libraryRepository;
-  SearchState _searchState;
+  SearchTypeSelected _searchState;
 
   LibraryBloc(
     this._libraryRepository,
@@ -25,10 +25,17 @@ class LibraryBloc extends HydratedBloc<LibraryEvent, LibraryState> {
   Stream<LibraryState> mapEventToState(
     LibraryEvent event,
   ) async* {
+    if (event is ShowHome) {
+      yield LibraryInitial();
+    } else if (state is ShowSearch) {
+      yield LibrarySearch();
+    } else if (state is ShowSettings) {
+      yield LibrarySettings();
+    }
     if (event is SearchTypeSelectEvent) {
-      _searchState = SearchState(event.searchType);
+      _searchState = SearchTypeSelected(event.searchType);
 
-      yield SearchState(event.searchType);
+      yield SearchTypeSelected(event.searchType);
     } else if (event is SearchEntryEvent) {
       _searchQuery = event.searchQuery;
     } else if (event is SearchEvent) {
@@ -49,7 +56,8 @@ class LibraryBloc extends HydratedBloc<LibraryEvent, LibraryState> {
         final musicState = MusicState(_searchState.searchType, searchResult);
         yield MusicResultState(musicState);
       } else if (event.searchType == SearchType.Podcast) {
-        final podcastState = PodcastState(_searchState.searchType, searchResult);
+        final podcastState =
+            PodcastState(_searchState.searchType, searchResult);
         yield PodcastResultState(podcastState);
       } else if (event.searchType == SearchType.TVShow) {
         final tvShowState = TVShowState(_searchState.searchType, searchResult);
@@ -66,7 +74,7 @@ class LibraryBloc extends HydratedBloc<LibraryEvent, LibraryState> {
         final movieSearchResult =
             await _libraryRepository.searchMovie(_searchQuery);
         return movieSearchResult;
-       break;
+        break;
       case SearchType.Game:
         final gameSearchResult =
             await _libraryRepository.searchGame(_searchQuery);
@@ -79,7 +87,7 @@ class LibraryBloc extends HydratedBloc<LibraryEvent, LibraryState> {
         break;
       case SearchType.Book:
         final bookSearchResult =
-        await _libraryRepository.searchBook(_searchQuery);
+            await _libraryRepository.searchBook(_searchQuery);
         return bookSearchResult;
         break;
       case SearchType.Podcast:
@@ -96,7 +104,7 @@ class LibraryBloc extends HydratedBloc<LibraryEvent, LibraryState> {
     }
   }
 
-  @override
+  /* @override
   LibraryState fromJson(Map<String, dynamic> json) {
     try {
       final searchResult = MovieState.fromJson(json);
@@ -113,5 +121,5 @@ class LibraryBloc extends HydratedBloc<LibraryEvent, LibraryState> {
     } else {
       return null;
     }
-  }
+  } */
 }

@@ -75,24 +75,19 @@ class SearchScreen extends StatelessWidget {
             } else if (state is MovieResultState) {
               result = state.movieState.searchResult.results;
               return getResultList(size, result);
-            }
-            else if (state is BookResultState) {
+            } else if (state is BookResultState) {
               result = state.bookState.bookSearchResult.items;
               return getResultListForBook(size, result);
-            }
-            else if (state is GameResultState) {
+            } else if (state is GameResultState) {
               result = state.gameState.gameSearchResult.results;
               return getResultListForGame(size, result);
-            }
-            else if (state is MusicResultState) {
+            } else if (state is MusicResultState) {
               result = state.musicState.musicSearchResult.artists;
               return getResultListForMusic(size, result);
-            }
-            else if (state is PodcastResultState) {
+            } else if (state is PodcastResultState) {
               result = state.podcastState.podcastSearchResult.feeds;
               return getResultList(size, result);
-            }
-            else if (state is TvShowResultState) {
+            } else if (state is TvShowResultState) {
               result = state.tvShowState.tvSearchResult.results;
               return getResultListForTV(size, result);
             }
@@ -787,26 +782,21 @@ class SearchScreen extends StatelessWidget {
   SearchType _getSearchType(LibraryState state) {
     SearchType searchType = SearchType.Movie;
 
-    if (state is SearchState) {
+    if (state is SearchTypeSelected) {
       searchType = state.searchType;
     } else if (state is SearchingLibrary) {
       searchType = state.searchType;
     } else if (state is MovieResultState) {
       searchType = state.movieState.searchType;
-    }
-    else if (state is BookResultState) {
+    } else if (state is BookResultState) {
       searchType = state.bookState.searchType;
-    }
-    else if (state is MusicResultState) {
+    } else if (state is MusicResultState) {
       searchType = state.musicState.searchType;
-    }
-    else if (state is PodcastResultState) {
+    } else if (state is PodcastResultState) {
       searchType = state.podcastState.searchType;
-    }
-    else if (state is TvShowResultState) {
+    } else if (state is TvShowResultState) {
       searchType = state.tvShowState.searchType;
-    }
-    else if (state is GameResultState) {
+    } else if (state is GameResultState) {
       searchType = state.gameState.searchType;
     }
 

@@ -1,5 +1,6 @@
 import 'package:butler_app/src/bloc/auth_bloc.dart';
 import 'package:butler_app/src/bloc/library_bloc.dart';
+import 'package:butler_app/src/bloc/tab_bloc.dart';
 import 'package:butler_app/src/resources/auth_repository.dart';
 import 'package:butler_app/src/resources/library_repository.dart';
 import 'package:butler_app/src/ui/screens/auth_screen.dart';
@@ -18,6 +19,7 @@ class ButlerApp extends StatelessWidget {
         BlocProvider(
           create: (context) => AuthBloc(AuthRepository()),
         ),
+        BlocProvider(create: (context) => TabBloc()),
         BlocProvider(
           create: (context) => LibraryBloc(LibraryRepository()),
         ),
