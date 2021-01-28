@@ -25,13 +25,6 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
   Stream<LibraryState> mapEventToState(
     LibraryEvent event,
   ) async* {
-    if (event is ShowHome) {
-      yield LibraryInitial();
-    } else if (state is ShowSearch) {
-      yield LibrarySearch();
-    } else if (state is ShowSettings) {
-      yield LibrarySettings();
-    }
     if (event is SearchTypeSelectEvent) {
       _searchState = SearchTypeSelected(event.searchType);
 
