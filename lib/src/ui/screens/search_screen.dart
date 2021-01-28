@@ -8,6 +8,7 @@ import 'package:butler_app/src/resources/services/game_service.dart';
 import 'package:butler_app/src/resources/services/music_service.dart';
 import 'package:butler_app/src/resources/services/tv_show_service.dart';
 import 'package:butler_app/src/resources/utilities/constants.dart';
+import 'package:butler_app/src/ui/widgets/category_control.dart';
 import 'package:butler_app/src/ui/widgets/search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -57,7 +58,15 @@ class SearchScreen extends StatelessWidget {
           builder: (_, state) {
             return TextButton(
               onPressed: () {
-                SearchType searchType = _getSearchType(state);
+                SearchType searchType =
+                    _getSearchType(state ?? LibraryInitial());
+
+                if (state is LibraryInitial) {
+                  context
+                      .read<LibraryBloc>()
+                      .add(SearchTypeSelectEvent(searchType));
+                }
+
                 context.read<LibraryBloc>().add(SearchEvent(searchType));
               },
               child: Text('Search'),
@@ -101,10 +110,6 @@ class SearchScreen extends StatelessWidget {
   ListView getResultList(Size size, List result) {
     return ListView.builder(
       itemBuilder: (_, index) {
-        // return Text(
-        //   result[index].title,
-        //   style: TextStyle(color: Colors.white),
-        // );
         return Column(
           children: [
             Row(
@@ -704,71 +709,65 @@ class SearchScreen extends StatelessWidget {
   /// type.
   ///
   Widget _getNavLinks() {
-    return BlocBuilder<LibraryBloc, LibraryState>(builder: (_, state) {
+    return BlocBuilder<LibraryBloc, LibraryState>(builder: (context, state) {
       SearchType searchType = _getSearchType(state);
 
       return Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Icon(
-              Icons.movie,
-              color: searchType == SearchType.Movie
-                  ? kSelectedIconColour
-                  : kDefaultIconColour,
-              size: 30,
-            ),
+          CategoryControl(
+            onTap: () {
+              context
+                  .read<LibraryBloc>()
+                  .add(SearchTypeSelectEvent(SearchType.Movie));
+            },
+            icon: Icons.movie,
+            isSelected: searchType == SearchType.Movie,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Icon(
-              Icons.menu_book,
-              color: searchType == SearchType.Book
-                  ? kSelectedIconColour
-                  : kDefaultIconColour,
-              size: 30,
-            ),
+          CategoryControl(
+            onTap: () {
+              context
+                  .read<LibraryBloc>()
+                  .add(SearchTypeSelectEvent(SearchType.Book));
+            },
+            icon: Icons.menu_book,
+            isSelected: searchType == SearchType.Book,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Icon(
-              Icons.queue_music,
-              color: searchType == SearchType.Music
-                  ? kSelectedIconColour
-                  : kDefaultIconColour,
-              size: 30,
-            ),
+          CategoryControl(
+            onTap: () {
+              context
+                  .read<LibraryBloc>()
+                  .add(SearchTypeSelectEvent(SearchType.Music));
+            },
+            icon: Icons.queue_music,
+            isSelected: searchType == SearchType.Music,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Icon(
-              Icons.videogame_asset,
-              color: searchType == SearchType.Game
-                  ? kSelectedIconColour
-                  : kDefaultIconColour,
-              size: 30,
-            ),
+          CategoryControl(
+            onTap: () {
+              context
+                  .read<LibraryBloc>()
+                  .add(SearchTypeSelectEvent(SearchType.Game));
+            },
+            icon: Icons.videogame_asset,
+            isSelected: searchType == SearchType.Game,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Icon(
-              Icons.tv,
-              color: searchType == SearchType.TVShow
-                  ? kSelectedIconColour
-                  : kDefaultIconColour,
-              size: 30,
-            ),
+          CategoryControl(
+            onTap: () {
+              context
+                  .read<LibraryBloc>()
+                  .add(SearchTypeSelectEvent(SearchType.TVShow));
+            },
+            icon: Icons.tv,
+            isSelected: searchType == SearchType.TVShow,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Icon(
-              Icons.mic,
-              color: searchType == SearchType.Podcast
-                  ? kSelectedIconColour
-                  : kDefaultIconColour,
-              size: 30,
-            ),
+          CategoryControl(
+            onTap: () {
+              context
+                  .read<LibraryBloc>()
+                  .add(SearchTypeSelectEvent(SearchType.Podcast));
+            },
+            icon: Icons.mic,
+            isSelected: searchType == SearchType.Podcast,
           ),
         ],
       );
@@ -781,6 +780,7 @@ class SearchScreen extends StatelessWidget {
   ///
   SearchType _getSearchType(LibraryState state) {
     SearchType searchType = SearchType.Movie;
+    print(state);
 
     if (state is SearchTypeSelected) {
       searchType = state.searchType;

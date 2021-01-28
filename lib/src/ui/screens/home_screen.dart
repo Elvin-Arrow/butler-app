@@ -1,6 +1,10 @@
+import 'package:butler_app/src/bloc/library_bloc.dart';
+import 'package:butler_app/src/bloc/tab_bloc.dart';
+import 'package:butler_app/src/resources/library_repository.dart';
 import 'package:butler_app/src/resources/utilities/constants.dart';
 import 'package:circular_menu/circular_menu.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -44,8 +48,7 @@ class HomeScreen extends StatelessWidget {
       items: [
         CircularMenuItem(
           onTap: () {
-            // TODO Add event
-            // _goToLibraryPage(context, SearchType.Movie);
+            _onTap(context, SearchType.Movie);
           },
           icon: Icons.movie,
           color: kBackgroundColor,
@@ -53,8 +56,7 @@ class HomeScreen extends StatelessWidget {
         ),
         CircularMenuItem(
           onTap: () {
-            // TODO Add event
-            // _goToLibraryPage(context, SearchType.Book);
+            _onTap(context, SearchType.Book);
           },
           icon: Icons.menu_book,
           color: kBackgroundColor,
@@ -62,8 +64,7 @@ class HomeScreen extends StatelessWidget {
         ),
         CircularMenuItem(
           onTap: () {
-            // TODO Add event
-            // _goToLibraryPage(context, SearchType.Music);
+            _onTap(context, SearchType.Music);
           },
           icon: Icons.queue_music,
           color: kBackgroundColor,
@@ -71,8 +72,7 @@ class HomeScreen extends StatelessWidget {
         ),
         CircularMenuItem(
           onTap: () {
-            // TODO Add event
-            // _goToLibraryPage(context, SearchType.Game);
+            _onTap(context, SearchType.Game);
           },
           icon: Icons.videogame_asset,
           color: kBackgroundColor,
@@ -80,8 +80,7 @@ class HomeScreen extends StatelessWidget {
         ),
         CircularMenuItem(
           onTap: () {
-            // TODO Add event
-            // _goToLibraryPage(context, SearchType.TVShow);
+            _onTap(context, SearchType.TVShow);
           },
           icon: Icons.tv,
           color: kBackgroundColor,
@@ -89,8 +88,7 @@ class HomeScreen extends StatelessWidget {
         ),
         CircularMenuItem(
           onTap: () {
-            // TODO Add event
-            // _goToLibraryPage(context, SearchType.Podcast);
+            _onTap(context, SearchType.Podcast);
           },
           icon: Icons.mic,
           color: kBackgroundColor,
@@ -98,5 +96,13 @@ class HomeScreen extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  /// Method to invoke the state change event pertaining to the selected
+  /// content type.
+  ///
+  void _onTap(BuildContext context, SearchType searchType) {
+    context.read<LibraryBloc>().add(SearchTypeSelectEvent(searchType));
+    context.read<TabBloc>().add(TabChangeEvent(1));
   }
 }
