@@ -66,7 +66,6 @@ class SearchScreen extends StatelessWidget {
                       .read<LibraryBloc>()
                       .add(SearchTypeSelectEvent(searchType));
                 }
-
                 context.read<LibraryBloc>().add(SearchEvent(searchType));
               },
               child: Text('Search'),
@@ -780,7 +779,6 @@ class SearchScreen extends StatelessWidget {
   ///
   SearchType _getSearchType(LibraryState state) {
     SearchType searchType = SearchType.Movie;
-    print(state);
 
     if (state is SearchTypeSelected) {
       searchType = state.searchType;

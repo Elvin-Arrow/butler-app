@@ -1,4 +1,3 @@
-// part of 'library_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:butler_app/src/models/book_state.dart';
 import 'package:butler_app/src/models/game_state.dart';
@@ -12,10 +11,10 @@ import 'package:butler_app/src/models/movie_state.dart';
 part 'library_event.dart';
 part 'library_state.dart';
 
-class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
+class LibraryBloc extends HydratedBloc<LibraryEvent, LibraryState> {
   String _searchQuery;
   final LibraryRepository _libraryRepository;
-  SearchTypeSelected _searchState;
+  // SearchTypeSelected _searchState;
 
   LibraryBloc(
     this._libraryRepository,
@@ -26,34 +25,33 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
     LibraryEvent event,
   ) async* {
     if (event is SearchTypeSelectEvent) {
-      _searchState = SearchTypeSelected(event.searchType);
+      // _searchState = SearchTypeSelected(event.searchType);
 
       yield SearchTypeSelected(event.searchType);
     } else if (event is SearchEntryEvent) {
       _searchQuery = event.searchQuery;
     } else if (event is SearchEvent) {
-      yield SearchingLibrary(_searchState.searchType);
+      yield SearchingLibrary(event.searchType);
 
       final searchResult = await _invokeSearchAPI(event.searchType);
 
       if (event.searchType == SearchType.Movie) {
-        final movieState = MovieState(_searchState.searchType, searchResult);
+        final movieState = MovieState(event.searchType, searchResult);
         yield MovieResultState(movieState);
       } else if (event.searchType == SearchType.Book) {
-        final bookState = BookState(_searchState.searchType, searchResult);
+        final bookState = BookState(event.searchType, searchResult);
         yield BookResultState(bookState);
       } else if (event.searchType == SearchType.Game) {
-        final gameState = GameState(_searchState.searchType, searchResult);
+        final gameState = GameState(event.searchType, searchResult);
         yield GameResultState(gameState);
       } else if (event.searchType == SearchType.Music) {
-        final musicState = MusicState(_searchState.searchType, searchResult);
+        final musicState = MusicState(event.searchType, searchResult);
         yield MusicResultState(musicState);
       } else if (event.searchType == SearchType.Podcast) {
-        final podcastState =
-            PodcastState(_searchState.searchType, searchResult);
+        final podcastState = PodcastState(event.searchType, searchResult);
         yield PodcastResultState(podcastState);
       } else if (event.searchType == SearchType.TVShow) {
-        final tvShowState = TVShowState(_searchState.searchType, searchResult);
+        final tvShowState = TVShowState(event.searchType, searchResult);
         yield TvShowResultState(tvShowState);
       }
     }
@@ -97,7 +95,7 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
     }
   }
 
-  /* @override
+  @override
   LibraryState fromJson(Map<String, dynamic> json) {
     try {
       final searchResult = MovieState.fromJson(json);
@@ -114,5 +112,5 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState> {
     } else {
       return null;
     }
-  } */
+  }
 }
