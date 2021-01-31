@@ -1,0 +1,23 @@
+@startjson music
+{
+    "track": [
+        {
+            "strTrack": "Yellow",
+            "strAlbum": "Parachutes",
+            "strArtist": "Coldplay",
+            "intDuration": "269240",
+            "strGenre": "Pop-Rock",
+            "strMood": "Relaxed",
+            "strStyle": "Rock/Pop",
+            "strTheme": "In Love",
+            "strDescriptionEN": "Yellow is a song by British alternative rock band Coldplay.",
+            "strTrackThumb": "https://www.theaudiodb.com/images/media/track/thumb/syswqy1340354244.jpg",
+            "strMusicVidCompany": "The Artists Company",
+            "intMusicVidViews": "409342773",
+            "intMusicVidLikes": "1585376",
+            "intMusicVidDislikes": "49796",
+            "intScore": "9.1"
+        }
+    ]
+}
+@endjson

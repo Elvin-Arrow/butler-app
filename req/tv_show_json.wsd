@@ -1,0 +1,22 @@
+@startjson tv_show
+{
+    "results": [
+        {
+            "original_language": "en",
+            "original_name": "Big Mouth",
+            "overview": "Teenage friends find their lives upended by the wonders...",
+            "first_air_date": "2017-09-29",
+            "genre_ids": [
+                35
+            ],
+            "popularity": 110.717,
+            "poster_path": "/1Zio9w1tAd3r5Gu4d9AzTSx2hnT.jpg",
+            "vote_average": 7.8
+        }
+    ]
+}
+@endjson
+
+' * Use this get Genres
+https://api.themoviedb.org/3/genre/tv/list?api_key=15c48b326b02e640a0f38e70ccf67d6c&language=en-US
+

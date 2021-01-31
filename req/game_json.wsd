@@ -1,0 +1,54 @@
+@startjson game 
+{
+    "results": [
+        {
+            "name": "Civilization",
+            "platforms": [
+                {
+                    "platform": {
+                        "name": "PC"
+                    }
+                },
+                {
+                    "platform": {
+                        "name": "PlayStation"
+                    }
+                },
+                {
+                    "platform": {
+                        "name": "SNES"
+                    }
+                },
+                {
+                    "platform": {
+                        "name": "Classic Macintosh"
+                    }
+                },
+                {
+                    "platform": {
+                        "name": "Commodore / Amiga"
+                    }
+                },
+                {
+                    "platform": {
+                        "name": "Atari ST"
+                    }
+                }
+            ],
+            "released": "1991-01-01",
+            "background_image": "https://media.rawg.io/media/screenshots/05f/05f21409dac9ce60809bc1bce40d657a.jpg",
+            "rating": 4.17,
+            "tags": [
+                {
+                    "name": "Singleplayer"
+                },
+                {
+
+                    "name": "Multiplayer"
+                }
+            ],
+            "genres": []
+        }
+    ]
+}
+@endjson
