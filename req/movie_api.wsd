@@ -1,1 +1,24 @@
-
+@startjson movie
+{
+    "result": [
+        {
+            "original_title": "title",
+            "original_language": "en",
+            "overview": "overview",
+            "poster_path": "path",
+            "popularity": "12.5",
+            "release_date": "YYYY-MM-DD",
+            "vote_average": "7.4"
+        },
+        {
+            "original_title": "title",
+            "original_language": "en",
+            "overview": "overview",
+            "poster_path": "path",
+            "popularity": "12.5",
+            "release_date": "YYYY-MM-DD",
+            "vote_average": "7.4"
+        }
+    ]
+}
+@endjson

@@ -1,0 +1,21 @@
+@startjson book
+{
+    "items": [
+        {
+            "volumeInfo": {
+                "title": "title",
+                "subtitle": "subtitle",
+                "authors": ["author1, author2"],
+                ' May or may not be there
+                "description": "description",
+                "publisher": "publisher",
+                "publishDate": "YYYY-MM-YY",
+                "categories": ["cat1, cat2"],
+                "imageLinks": {"thumbnail": "path"},
+                "language": "en"
+
+            }
+        }
+    ]
+}
+@endjson
